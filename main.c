@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/05/23 08:56:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/08 03:21:59 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,43 +16,39 @@ int	main(void)
 {
 	int		ant_num;
 	t_rlist	*list;
+	t_rlist	*temp;
 
 	list = NULL;
 	get_ants(&ant_num);
 	get_rooms(&list);
-/* 	while (list)
+	free_everything(list);
+	return (0);
+}
+
+/*	print list
+ 	while (list)
 	{
 		printf("%s\n", list->room->name);
 		list = list->next;
 	} */
+
+
+/* 	print links
 	char *line;
 	printf("room to show links: \n");
 	get_next_line(0, &line);
-	while (list)
+	temp = list;
+	while (temp)
 	{
-		if (!ft_strcmp(line, list->room->name))
+		if (!ft_strcmp(line, temp->room->name))
 		{
-			while (list->room->links)
+			while (temp->room->links)
 			{
 				printf("links: ");
-				printf("%s, ", list->room->links->room->name);
+				printf("%s, ", temp->room->links->room->name);
 				printf("\n");
-				list->room->links = list->room->links->next;
+				temp->room->links = temp->room->links->next;
 			}
 		}
-		list = list->next;
-	}
-/* 	while (list)
-	{
-		if (!ft_strcmp(list->room->name, "2"))
-		{
-			while (list->room->links)
-			{
-				printf("%s\n", list->room->links->room->name);
-				list->room->links = list->room->links->next;
-			}
-		}
-		list = list->next;
+		temp = temp->next;
 	} */
-	return (0);
-}

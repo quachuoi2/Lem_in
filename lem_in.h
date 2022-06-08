@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/05/23 07:54:04 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/08 03:12:15 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,8 @@ void	get_links(t_rlist *list, char *line);
 
 //rlist.c
 void	add_room_list(t_room *room, t_rlist **list);
+
+//utilities.c
+void	free_everything(t_rlist *list);
 
 #endif
