@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/08 03:12:12 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/13 21:17:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,11 @@ void	free_everything(t_rlist *list)
 		free(list);
 		list = temp;
 	}
+}
+
+void	set_start_room(t_room **start, t_rlist *list)
+{
+	while (list->room->se_state != START_ROOM)
+		list = list->next;
+	*start = list->room;
 }

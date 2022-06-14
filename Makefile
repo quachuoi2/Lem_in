@@ -6,12 +6,12 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/06/08 02:07:35 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/06/13 19:50:20 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
-SRCS = main.c error.c get.c rlist.c utilities.c
+NAME = lem_in
+SRCS = main.c error.c get.c rlist.c utilities.c algo.c
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes/
 

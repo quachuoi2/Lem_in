@@ -6,35 +6,47 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/08 03:21:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/14 06:31:52 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int		ant_num;
+	int		fd;
 	t_rlist	*list;
 	t_rlist	*temp;
+	t_room	*start;
 
+	/* if (argc < 2)
+		return (write(1, "no input\n", 9)); */
+	fd = open("z", O_RDONLY);
 	list = NULL;
-	get_ants(&ant_num);
-	get_rooms(&list);
+	get_ants(&ant_num, fd);
+	get_rooms(&list, fd);
+	set_start_room(&start, list);
+
+	int temp_y = 0;
+	while (start->se_state != END_ROOM)
+	{
+		printf("%s - ", start->name);
+		while (start->coord_y > start->links->room->coord_y)
+			start->links = start->links->next;
+		start = start->links->room;
+	}
+	printf("%s\n", start->name);
 	free_everything(list);
 	return (0);
 }
 
-/*	print list
- 	while (list)
-	{
-		printf("%s\n", list->room->name);
-		list = list->next;
-	} */
-
-
 /* 	print links
 	char *line;
+
 	printf("room to show links: \n");
 	get_next_line(0, &line);
 	temp = list;
