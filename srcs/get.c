@@ -6,13 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/14 06:30:30 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/21 23:19:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	get_ants(int *ants_num, int fd)
+void	get_data(int *ants_num, int fd, t_rlist **list)
 {
 	char	*line;
 
@@ -20,6 +20,7 @@ void	get_ants(int *ants_num, int fd)
 	*ants_num = ft_atoi(line);
 	//check if number is valid
 	free(line);
+	get_rooms(list, fd);
 }
 
 void	assign_room(t_room **room, char *line)
@@ -31,9 +32,8 @@ void	assign_room(t_room **room, char *line)
 	(*room)->name = ft_strdup(split[0]);
 	(*room)->coord_x = ft_atoi(split[1]);
 	(*room)->coord_y = ft_atoi(split[2]);
-	(*room)->se_state = NORMAL_ROOM;
-	//(*room)->count_state = 0;
-	//(*room)->link_count = 0;
+	(*room)->state = VACANT_ROOM;
+	(*room)->crossed = 0;
 	(*room)->links = NULL;
 	ft_arrdel(&split);
 }
@@ -49,7 +49,7 @@ void	assign_start_end_room(t_room **room, char **line, int fd)
 	free(*line);
 	get_next_line(fd, line);
 	assign_room(room, *line);
-	(*room)->se_state = start_end_state;
+	(*room)->state = start_end_state;
 }
 
 void	get_rooms(t_rlist **list, int fd)
@@ -60,10 +60,12 @@ void	get_rooms(t_rlist **list, int fd)
 
 	while (get_next_line(fd, &line))
 	{
-		if (ft_strchr(line, '-'))
-			break;
 		if (line[0] != '#')
+		{
+			if (ft_strchr(line, '-'))
+				break;
 			assign_room(&room, line);
+		}
 		else if (line[1] == '#' && (line[2] == 's' || line[2] == 'e'))
 			assign_start_end_room(&room, &line, fd);
 		if (room)
@@ -78,8 +80,6 @@ void	get_rooms(t_rlist **list, int fd)
 		if (get_next_line(fd, &line) == DONE_READ)
 			break;
 	}
-	/* if (!fd)
-		free(line); */
 }
 
 void	check_link(t_room *a, t_room *b)
@@ -95,8 +95,6 @@ void	check_link(t_room *a, t_room *b)
 	}
 	add_room_list(a, &(b->links));
 	add_room_list(b, &(a->links));
-	//a->link_count++;
-	//b->link_count++;
 }
 
 void	get_links(t_rlist *list, char *line, int fd)
@@ -104,23 +102,21 @@ void	get_links(t_rlist *list, char *line, int fd)
 	char	**split;
 	t_room	*r1;
 	t_room	*r2;
-	t_rlist	*temp;
 
 	if (line[0] != '#')
 	{
 		split = ft_strsplit(line, '-');
 		r1 = NULL;
 		r2 = NULL;
-		temp = list;
-		while (temp)
+		while (list)
 		{
 			if (r1 && r2)
 				break;
-			if (!ft_strcmp(split[0], temp->room->name))
-				r1 = temp->room;
-			else if (!ft_strcmp(split[1], temp->room->name))
-				r2 = temp->room;
-			temp = temp->next;
+			if (!ft_strcmp(split[0], list->room->name))
+				r1 = list->room;
+			else if (!ft_strcmp(split[1], list->room->name))
+				r2 = list->room;
+			list = list->next;
 		}
 		check_link(r1, r2);
 	}

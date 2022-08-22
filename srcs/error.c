@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   algo.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/13 23:42:11 by qnguyen          ###   ########.fr       */
+/*   Created: 2022/08/14 14:29:54 by qnguyen           #+#    #+#             */
+/*   Updated: 2022/08/19 19:14:58 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int	count_routes(t_room *room)
+void	check_start_end_room(t_rlist *list, t_room **start)
 {
-	int	count;
-	int	link_index = 0;
+	int	end;
 
-	if (room->se_state == END_ROOM)
-		return (1);
-	return (count);
+	end = 0;
+	*start = NULL;
+	while (list)
+	{
+		if (list->room->state == END_ROOM)
+			end = 1;
+		else if (list->room->state == START_ROOM)
+			*start = list->room;
+		list = list->next;
+	}
+	if (!end || !*start)
+	{
+		printf("where room\n");
+		exit(0);
+	}
 }

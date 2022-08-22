@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utilities.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/13 21:17:39 by qnguyen          ###   ########.fr       */
+/*   Created: 2022/08/15 17:04:31 by qnguyen           #+#    #+#             */
+/*   Updated: 2022/08/16 09:12:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/* void	free_old_arr(char ***arr)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < NUM_OF_PATH)
+	{
+		j = 0;
+		while (j < NUM_OF_ROOM_PER_PATH)
+		{
+			ft_memdel((void **)&arr[i][j]);
+			j++;
+		}
+		ft_memdel((void **)&arr[i]);
+		i++;
+	}
+} */
 
 void	free_everything(t_rlist *list)
 {
@@ -31,11 +50,4 @@ void	free_everything(t_rlist *list)
 		free(list);
 		list = temp;
 	}
-}
-
-void	set_start_room(t_room **start, t_rlist *list)
-{
-	while (list->room->se_state != START_ROOM)
-		list = list->next;
-	*start = list->room;
 }
