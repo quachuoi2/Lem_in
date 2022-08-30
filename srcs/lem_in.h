@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/21 22:22:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/30 17:18:25 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@
 typedef struct s_room t_room;
 typedef struct s_rlist t_rlist;
 typedef struct s_path t_path;
+typedef struct s_ant t_ant;
 
 struct s_room
 {
 	int		coord_x;
 	int		coord_y;
+	int		ant;
 	int		state;
 	int		crossed;
 	char	*name;
@@ -46,9 +48,15 @@ struct s_rlist
 struct s_path
 {
 	int		steps;
-	//t_room	*room;
+	int		ant_count;
 	t_room	**room;
 };
+
+struct s_ant
+{
+	int	path;
+	int	room;
+}; //used only for ant_traveler
 
 //get.c
 void	get_data(int *ants_num, int fd, t_rlist **list);
@@ -57,13 +65,16 @@ void	get_links(t_rlist *list, char *line, int fd);
 
 //utilities.c
 void	add_room_list(t_room *room, t_rlist **list);
+void	initialize_paths(t_path **path);
+void	initialize_best_path(int **best_path, int path_idx);
 void	print_room_links(t_rlist *list);
 void	track_one_route(t_room *start);
 void	malloc_paths(char ****arr, int ammount);
 void	print_path(t_path *path, int i);
+void	print_max_flow_path(int *best_path);
 
 //algo.c
-void	lemme_in(t_room *room);
+void	lemme_in(t_room *room, int ant_num);
 void	traceroute(t_path *path, t_room *room, int *path_idx, int *room_idx);
 void	path_expansion_jutsu(char ***src_arr, t_path *path, int path_amt);
 void	conclude_path(t_path *path, int *path_idx, int room_idx);
@@ -78,6 +89,12 @@ void	free_everything(t_rlist *list);
 //quicksort.c
 void	path_quicksort(t_path *path, int low, int high);
 
-int		*max_flow_path(t_path *path, int last_path);
+//ford_fulkerson.c
+void	max_flow_path(t_path *path, int last_path, int *max_flow_path, int target_flow);
+int		flow_count(t_path *path, int *best_path, int ant_num);
+
+//ant_traveler.c
+int	ant_traveler(t_path *path, int *best_path, int ants);
+int	path_traveler(t_path *path, int *best_path, int ant_num);
 
 #endif

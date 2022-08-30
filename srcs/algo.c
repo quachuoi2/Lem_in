@@ -6,45 +6,31 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/21 23:11:20 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/30 18:42:23 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	set_route_steps(t_path *path)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (path[i].room[0])
-	{
-		j = 0;
-		while (path[i].room[j])
-			j++;
-		path[i].steps = j;
-		i++;
-	}
-}
-
-void	lemme_in(t_room *room)
+void	lemme_in(t_room *room, int ant_num)
 {
 	int		path_idx;
 	int		room_idx;
+	int		*best_path;
 	t_path	*path;
 
-	path = malloc(sizeof(t_path) * NUM_OF_PATH);
-	path_idx = 0;
-	while (path_idx < NUM_OF_PATH)
-		path[path_idx++].room = ft_memalloc(sizeof(t_room *) * NUM_OF_ROOM_PER_PATH);
 	path_idx = 0;
 	room_idx = 0;
+	initialize_paths(&path);
 	traceroute(path, room, &path_idx, &room_idx);
-	set_route_steps(path);
 	path_quicksort(path, 0, path_idx - 1);
-	print_path(path, path_idx);
-	max_flow_path(path, path_idx);
+	//print_path(path, path_idx);
+	initialize_best_path(&best_path, path_idx);
+	int flow = flow_count(path, best_path, ant_num);
+	max_flow_path(path, path_idx, best_path, flow);
+	//print_max_flow_path(best_path);
+	//ant_traveler(path, best_path, ant_num);
+	path_traveler(path, best_path, ant_num);
 }
 
 void	traceroute(t_path *path, t_room *room, int *path_idx, int *room_idx)
@@ -81,10 +67,11 @@ void	conclude_path(t_path *path, int *path_idx, int room_idx)
 	{
 		if (path[*path_idx].room[j] == 0)
 			path[*path_idx].room[j] = path[*path_idx - 1].room[j];
-		printf("%s - ", path[*path_idx].room[j]->name);
 		j++;
 	}
-	printf("%s\n", path[*path_idx].room[j]->name);
+	path[*path_idx].room[room_idx + 1] = 0;
+	path[*path_idx].steps = j;
+	path[*path_idx].ant_count = 0;
 	(*path_idx)++;
 
 /* 	if (*path_idx % NUM_OF_PATH == 0)

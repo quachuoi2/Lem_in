@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/21 23:19:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/28 21:33:30 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	assign_room(t_room **room, char *line)
 	(*room)->name = ft_strdup(split[0]);
 	(*room)->coord_x = ft_atoi(split[1]);
 	(*room)->coord_y = ft_atoi(split[2]);
+	(*room)->ant = 0;
 	(*room)->state = VACANT_ROOM;
 	(*room)->crossed = 0;
 	(*room)->links = NULL;

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/19 22:00:39 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/30 17:18:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,28 @@ void	add_room_list(t_room *room, t_rlist **list)
 	*list = current;
 }
 
+void	initialize_best_path(int **best_path, int path_idx)
+{
+	*best_path = ft_memalloc(sizeof(int) * (path_idx + 1));
+	int i = 0;
+	while (i < path_idx)
+	{
+		(*best_path)[i] = i;
+		i++;
+	}
+	(*best_path)[i] = -1;
+}
+
+
+void	initialize_paths(t_path **path)
+{
+	int	i;
+
+	(*path) = malloc(sizeof(t_path) * NUM_OF_PATH);
+	i = 0;
+	while (i < NUM_OF_PATH)
+		(*path)[i++].room = ft_memalloc(sizeof(t_room *) * NUM_OF_ROOM_PER_PATH);
+}
 //deletable below
 void	print_room_links(t_rlist *list)
 {
@@ -47,49 +69,11 @@ void	print_room_links(t_rlist *list)
 	}
 }
 
-void track_one_route(t_room	*start)
-{
-	while (start->state != END_ROOM)
-	{
-		printf("%s - ", start->name);
-		t_rlist *temp = start->links;
-		int max_y = temp->room->coord_y;
-		int min_x = temp->room->coord_x;
-
-		while (temp)
-		{
-			if (temp->room->coord_y > max_y)
-			{
-				max_y = temp->room->coord_y;
-				min_x = temp->room->coord_x;
-			}
-			temp = temp->next;
-		}
-		temp = start->links;
-		while (temp)
-		{
-			if (temp->room->coord_y == max_y && temp->room->coord_x < min_x)
-				min_x = temp->room->coord_x;
-			temp = temp->next;
-		}
-		while (start->links)
-		{
-			if (start->links->room->coord_x == min_x && start->links->room->coord_y == max_y)
-			{
-				start = start->links->room;
-				break;
-			}
-			start->links = start->links->next;
-		}
-	}
-	printf("%s\n", start->name);
-}
-
 void	print_path(t_path *path, int last_path)
 {
 	int i = 0;
 
-	printf("\n");
+	printf("all routes: \n");
 	while (i < last_path)
 	{
 		int j = 0;
@@ -98,7 +82,18 @@ void	print_path(t_path *path, int last_path)
 			printf("%s - ", path[i].room[j]->name);
 			j++;
 		}
-		printf("\n");
+		printf("%s\n", path[i].room[j]->name);
 		i++;
 	}
+}
+
+void	print_max_flow_path(int *best_path)
+{
+	int i = 0;
+	while (best_path[i] != -1)
+	{
+		printf("%d-", best_path[i]);
+		i++;
+	}
+	printf("\n");
 }
