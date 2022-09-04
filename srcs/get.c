@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/28 21:33:30 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/30 22:55:30 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	get_data(int *ants_num, int fd, t_rlist **list)
 	char	*line;
 
 	get_next_line(fd, &line);
+	check_ants(line);
 	*ants_num = ft_atoi(line);
-	//check if number is valid
 	free(line);
 	get_rooms(list, fd);
 }
@@ -61,22 +61,23 @@ void	get_rooms(t_rlist **list, int fd)
 
 	while (get_next_line(fd, &line))
 	{
+		room = NULL;
 		if (line[0] != '#')
 		{
 			if (ft_strchr(line, '-'))
 				break;
 			assign_room(&room, line);
 		}
-		else if (line[1] == '#' && (line[2] == 's' || line[2] == 'e'))
+		else if (!ft_strcmp(line, "##start") || !ft_strcmp(line, "##end"))
 			assign_start_end_room(&room, &line, fd);
 		if (room)
 			add_room_list(room, list);
-		room = NULL;
 		free(line);
 	}
 	while (*line) //also must stop when nonsense is entered
 	{
-		get_links(*list, line, fd);
+		if (*line != '#')
+			get_links(*list, line, fd);
 		free(line);
 		if (get_next_line(fd, &line) == DONE_READ)
 			break;

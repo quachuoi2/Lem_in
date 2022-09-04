@@ -1,6 +1,0 @@
-check if ant num is valid
-check if rooms are valid (coorect coords)
-check if links are valid (room exists or not)
-check if path_expansion_jutsu works
-handle #comments
-handle comments right after ##start/##end

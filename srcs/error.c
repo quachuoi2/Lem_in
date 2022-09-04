@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:29:54 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/19 19:14:58 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/08/30 22:39:52 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,18 @@ void	check_start_end_room(t_rlist *list, t_room **start)
 	{
 		printf("where room\n");
 		exit(0);
+	}
+}
+
+void	check_ants(char *line)
+{
+	while (*line)
+	{
+		if (!ft_isdigit(*line))
+		{
+			printf("???\n");
+			exit(0);
+		}
+		line++;
 	}
 }

@@ -6,48 +6,27 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 11:41:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/30 18:42:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/02 01:20:58 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int	ant_traveler(t_path *path, int *best_path, int ant_num)
+int	instant_finish(t_path *path, int max_ant)
 {
-/* 	int		cur_ant;
-	int		path_idx;
-	t_ant	ant[ant_num];
+	int	i = 0;
 
-	cur_ant = 0;
-	while (cur_ant < ant_num)
-		ant[cur_ant++].room = 0;
-	cur_ant = 0;
-	path_idx = 0;
-	while (cur_ant < ant_num)
+	if (path[0].room[1]->state == END_ROOM)
 	{
-		ant[cur_ant].room++;
-		printf("L%d-%s", cur_ant + 1, path[best_path[path_idx]].room[ant[cur_ant].room]->name);
-		path_idx++;
-		cur_ant++;
-		if (best_path[path_idx] == -1)
-		{
-			printf("\n");
-			path_idx = 0;
-			cur_ant = 0;
-		}
-	} */
+		while (i <= max_ant)
+			printf("L%d-%s ", i++, path[0].room[1]->name);
+		printf("\n");
+		return (1);
+	}
+	return (0);
 }
 
-/* void	ant_distributor(t_path *path, int *best_path, int max_ant)
-{
-	while (max_ant)
-	{
-
-	}
-
-} */
-
-int	path_traveler(t_path *path, int *best_path, int ant_num)
+int	exotic_ant_traveler(t_path *path, int *best_path, int ant_num, int target_flow)
 {
 	int	path_idx;
 	int	r_idx;
@@ -58,7 +37,7 @@ int	path_traveler(t_path *path, int *best_path, int ant_num)
 	while (path[0].room[path[0].steps]->ant < ant_num)
 	{
 		path_idx = 0;
-		while (best_path[path_idx] != -1)
+		while (path_idx < target_flow)
 		{
 			room = path[best_path[path_idx]].room;
 			r_idx = path[best_path[path_idx]].steps - 1;

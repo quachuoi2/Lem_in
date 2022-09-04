@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/30 18:41:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/03 04:07:10 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,24 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+int	g_final_idx;
+
 int	main()
 {
 	int		ant_num;
 	int		fd;
 	t_rlist	*list;
 	t_room	*start;
+	t_path	*path;
 
+	fd = open("./testmap/LFH", O_RDONLY);
 	fd = 0;
-	fd = open("./testmap/mep", O_RDONLY);
 	list = NULL;
 	get_data(&ant_num, fd, &list);
 	check_start_end_room(list, &start);
-	lemme_in(start, ant_num);
+	initialize_paths(&path);
+	lemme_in(start, path, ant_num);
 	free_everything(list);
+	//free path
 	return (0);
 }

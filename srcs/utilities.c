@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/30 17:18:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/04 01:29:57 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@ void	add_room_list(t_room *room, t_rlist **list)
 	*list = current;
 }
 
-void	initialize_best_path(int **best_path, int path_idx)
+void	initialize_best_path(int **best_path)
 {
-	*best_path = ft_memalloc(sizeof(int) * (path_idx + 1));
+	*best_path = ft_memalloc(sizeof(int) * (g_final_idx + 1));
 	int i = 0;
-	while (i < path_idx)
+	while (i < g_final_idx)
 	{
 		(*best_path)[i] = i;
 		i++;
 	}
 	(*best_path)[i] = -1;
 }
-
 
 void	initialize_paths(t_path **path)
 {
@@ -44,6 +43,7 @@ void	initialize_paths(t_path **path)
 	while (i < NUM_OF_PATH)
 		(*path)[i++].room = ft_memalloc(sizeof(t_room *) * NUM_OF_ROOM_PER_PATH);
 }
+
 //deletable below
 void	print_room_links(t_rlist *list)
 {
@@ -69,14 +69,15 @@ void	print_room_links(t_rlist *list)
 	}
 }
 
-void	print_path(t_path *path, int last_path)
+void	print_path(t_path *path)
 {
 	int i = 0;
 
 	printf("all routes: \n");
-	while (i < last_path)
+	while (i < g_final_idx)
 	{
 		int j = 0;
+		printf("%d: ",i);
 		while (j < path[i].steps)
 		{
 			printf("%s - ", path[i].room[j]->name);
@@ -85,15 +86,38 @@ void	print_path(t_path *path, int last_path)
 		printf("%s\n", path[i].room[j]->name);
 		i++;
 	}
+	printf("\n");
 }
 
-void	print_max_flow_path(int *best_path)
+void	print_flow_path(t_path *path, int *flow_path, int mof)
+{
+	int i = 0;
+	int sum = 0;
+	if (mof == 0)
+		printf("fg: ");
+	else if (mof == 1)
+		printf("mfg: ");
+	else if (mof == 2)
+		printf("RG:  ");
+	else if (mof == 3)
+		printf("tf:  ");
+	while (flow_path[i] != -1)
+	{
+		printf("%d-", flow_path[i]);
+		sum += path[flow_path[i]].steps;
+		i++;
+	}
+	printf(" = %d (%d)\n\n", sum, i);
+}
+
+void	print_path_ant_count(t_path *path, int *best_path)
 {
 	int i = 0;
 	while (best_path[i] != -1)
-	{
-		printf("%d-", best_path[i]);
-		i++;
-	}
+		printf("%d ", best_path[i++]);
+	printf("\n");
+	i = 0;
+	while (best_path[i] != -1)
+		printf("%d ", path[best_path[i++]].ant_count);
 	printf("\n");
 }
