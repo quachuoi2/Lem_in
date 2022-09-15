@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 17:33:42 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 20:16:06 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	assign_room(t_room **room, char *line)
 	(*room)->state = VACANT_ROOM;
 	(*room)->crossed = 0;
 	(*room)->path_idx = -1;
+	(*room)->edge = 0;
 	(*room)->links = NULL;
 	ft_arrdel(&split);
 }

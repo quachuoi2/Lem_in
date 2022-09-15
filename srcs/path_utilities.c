@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 21:26:07 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 18:43:13 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 20:18:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,9 @@ void	init_path_groups(t_path_group *group)
 	group->group = ft_memalloc(sizeof(int) * MAGIC_NUMBER);
 }
 
-void	conclude_path(t_edge *queue, int q_idx, t_path *path, int path_idx)
+void	assign_edge_to_room(t_room *room, t_edge *edge)
 {
-	int	step_count;
-	int	i;
-	t_room	*tar;
-	t_room	*tar2;
-
-	step_count = 0;
-	tar = queue[q_idx].from;
-	tar2 = queue[q_idx].b4from;
-	printf("PATH: %s-", queue[q_idx].to->name);
-	while (--q_idx > -1)
-	{
-		if (queue[q_idx].to == tar && queue[q_idx].from == tar2)
-		{
-			printf("%s-", queue[q_idx].to->name);
-			if (queue[q_idx].to->state != START_ROOM)
-				queue[q_idx].to->path_idx = path_idx;
-			tar = queue[q_idx].from;
-			tar2 = queue[q_idx].b4from;
-			step_count++;
-		}
-	}
-	printf("\n");
-	path[path_idx].steps = step_count;
-	path[path_idx].ant_count = 0;
+	room->edge = edge;
 }
 
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx)

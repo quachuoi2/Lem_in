@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 18:46:19 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 20:43:53 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 	{
 		if (queue[i].to->state == END_ROOM)
 		{
-			printf("----/p%d:\n%s-", queue[i].from->path_idx, queue[i].to->name);
-			t_room *tar = queue[i].from;
-			t_room *tar2 = queue[i].b4from;
+			printf("----/p%d:\n%s-", queue[i].current->path_idx, queue[i].to->name);
+			t_room *current_tar = queue[i].current;
+			t_room *b4_tar = queue[i].b4from;
 			j = i;
 			while (j > -1)
 			{
-				if (queue[j].to == tar && queue[j].from == tar2)
+				if (queue[j].to == current_tar && queue[j].current == b4_tar)
 				{
 					printf("%s-", queue[j].to->name);
-					tar = queue[j].from;
-					tar2 = queue[j].b4from;
+					current_tar = queue[j].current;
+					b4_tar = queue[j].b4from;
 				}
 				j--;
 			}
@@ -41,6 +41,32 @@
 	}
 } */
 
+void	conclude_path(t_edge *queue, int q_idx, t_path *path, int path_idx)
+{
+	int	step_count;
+	t_room	*current_tar;
+	t_room	*b4_tar;
+
+	step_count = 0;
+	current_tar = queue[q_idx].current;
+	b4_tar = queue[q_idx].b4from;
+	queue[q_idx].current->edge = &queue[q_idx]; //assign current edge to current room
+	while (--q_idx > -1)
+	{
+		if (queue[q_idx].current == b4_tar && queue[q_idx].to == current_tar)
+		{
+			/* if (queue[q_idx].to->state != START_ROOM)
+				queue[q_idx].to->path_idx = path_idx; */
+			current_tar = queue[q_idx].current;
+			b4_tar = queue[q_idx].b4from;
+			queue[q_idx].current->edge = &queue[q_idx];  //assign current edge to current room
+			step_count++;
+		}
+	}
+	path[path_idx].steps = step_count;
+	path[path_idx].ant_count = 0;
+}
+
 static int	get_adj(int idx, t_edge *queue, int *q_count)
 {
 	t_rlist *links;
@@ -49,7 +75,7 @@ static int	get_adj(int idx, t_edge *queue, int *q_count)
 	int amt;
 
 	room = queue[idx].to;
-	before = queue[idx].from;
+	before = queue[idx].current;
 	links = room->links;
 	amt = 0;
 	while (links)
@@ -57,7 +83,7 @@ static int	get_adj(int idx, t_edge *queue, int *q_count)
 		if (links->room->crossed == 0)
 		{
 			queue[*q_count].b4from = before;
-			queue[*q_count].from = room;
+			queue[*q_count].current = room;
 			queue[*q_count].to = links->room;
 			(*q_count)++;
 			amt++;
@@ -69,25 +95,46 @@ static int	get_adj(int idx, t_edge *queue, int *q_count)
 	return (amt);
 }
 
+static void	print_all_path(t_room *room)
+{
+	t_room *temp;
+
+	while (room->links)
+	{
+		if (room->links->room->edge)
+		{
+			temp = room->links->room;
+			printf("%s - ", temp->edge->b4from->name);
+			while (temp->state != END_ROOM)
+			{
+				printf("%s - ", temp->name);
+				temp = temp->edge->to;
+			}
+			printf("%s\n", temp->name);
+		}
+		room->links = room->links->next;
+	}
+}
+
 void bfs(t_room *room, int ant)
 {
 	int	q_rem = 1;
 	int	q_count = 1;
 	int	q_idx = 0;
+	int path_idx = 0;
 	t_edge queue[MAGIC_NUMBER];
 	t_path path[MAGIC_NUMBER];
-	int path_idx = 0;
 	t_path_group best;
 	t_path_group cur;
 
 	init_path_groups(&best);
 	init_path_groups(&cur);
 	queue[0].b4from = room;
-	queue[0].from = room;
+	queue[0].current = room;
 	queue[0].to = room;
 	while (q_rem--)
 	{
-		//printf("%s - %s - %s\n", queue[q_idx].b4from->name, queue[q_idx].from->name, queue[q_idx].to->name);
+		//printf("%s - %s - %s\n", queue[q_idx].b4from->name, queue[q_idx].current->name, queue[q_idx].to->name);
 		if (queue[q_idx].to->state != END_ROOM)
 		{
 			if (queue[q_idx].to->crossed == 0)
@@ -106,6 +153,6 @@ void bfs(t_room *room, int ant)
 		}
 		q_idx++;
 	}
+	//print_all_path(room);
 	printf("LC: %d\n", best.line_count);
-	//get_path(queue, q_idx);
 }
