@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 16:47:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/04 02:50:42 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 17:52:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	target_flow_count(t_path *path, int *best_group, int max_ant)
 	line = path[best_group[path_idx]].steps;
 	while (max_ant)
 	{
-		while (best_group[path_idx + 1] != -1 && line >= path[best_group[path_idx + 1]].steps && step == 0)
+		while (best_group[path_idx + 1] != -1 && line >= path[best_group[path_idx + 1]].steps && step == 0) //move through all the paths with the same amt of steps
 			path_idx++;
 		path[best_group[step]].ant_count++;
-		step++;
-		if (step > path_idx) //every path gets +1 ant before +1 line //step == path_idx + 1
+		step++; //every path gets +1 ant before +1 line
+		if (step > path_idx)  //step == path_idx + 1 -> reset
 		{
 			line++;
 			step = 0;

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/03 04:07:10 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 18:08:59 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int	main()
 	t_room	*start;
 	t_path	*path;
 
-	fd = open("./testmap/LFH", O_RDONLY);
+	fd = open("./testmap/cross", O_RDONLY);
 	fd = 0;
 	list = NULL;
 	get_data(&ant_num, fd, &list);
 	check_start_end_room(list, &start);
-	initialize_paths(&path);
-	lemme_in(start, path, ant_num);
+	bfs(start, ant_num);
+	// initialize_paths(&path);
+	// lemme_in(start, path, ant_num);
 	free_everything(list);
 	//free path
 	return (0);

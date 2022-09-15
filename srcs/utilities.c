@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/04 01:29:57 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 17:03:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	add_room_list(t_room *room, t_rlist **list)
 	*list = current;
 }
 
-void	initialize_best_path(int **best_path)
+
+//deletable below
+/*void	initialize_best_path(int **best_path)
 {
 	*best_path = ft_memalloc(sizeof(int) * (g_final_idx + 1));
 	int i = 0;
@@ -38,13 +40,12 @@ void	initialize_paths(t_path **path)
 {
 	int	i;
 
-	(*path) = malloc(sizeof(t_path) * NUM_OF_PATH);
+	(*path) = malloc(sizeof(t_path) * MAGIC_NUMBER);
 	i = 0;
-	while (i < NUM_OF_PATH)
-		(*path)[i++].room = ft_memalloc(sizeof(t_room *) * NUM_OF_ROOM_PER_PATH);
+	while (i < MAGIC_NUMBER)
+		(*path)[i++].room = ft_memalloc(sizeof(t_room *) * MAGIC_NUMBER);
 }
 
-//deletable below
 void	print_room_links(t_rlist *list)
 {
  	char *line;
@@ -121,3 +122,4 @@ void	print_path_ant_count(t_path *path, int *best_path)
 		printf("%d ", path[best_path[i++]].ant_count);
 	printf("\n");
 }
+ */

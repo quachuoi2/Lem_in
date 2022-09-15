@@ -6,13 +6,72 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 21:26:07 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/03 07:14:40 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 18:43:13 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	retrace_rooms(t_path *cur_path, int reached_room)
+void	init_path_groups(t_path_group *group)
+{
+	group->tol_step = 0;
+	group->path_count = 0;
+	group->line_count = 0;
+	group->group = ft_memalloc(sizeof(int) * MAGIC_NUMBER);
+}
+
+void	conclude_path(t_edge *queue, int q_idx, t_path *path, int path_idx)
+{
+	int	step_count;
+	int	i;
+	t_room	*tar;
+	t_room	*tar2;
+
+	step_count = 0;
+	tar = queue[q_idx].from;
+	tar2 = queue[q_idx].b4from;
+	printf("PATH: %s-", queue[q_idx].to->name);
+	while (--q_idx > -1)
+	{
+		if (queue[q_idx].to == tar && queue[q_idx].from == tar2)
+		{
+			printf("%s-", queue[q_idx].to->name);
+			if (queue[q_idx].to->state != START_ROOM)
+				queue[q_idx].to->path_idx = path_idx;
+			tar = queue[q_idx].from;
+			tar2 = queue[q_idx].b4from;
+			step_count++;
+		}
+	}
+	printf("\n");
+	path[path_idx].steps = step_count;
+	path[path_idx].ant_count = 0;
+}
+
+void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx)
+{
+	cur->group[cur->path_count] = *path_idx;
+	cur->tol_step += path[*path_idx].steps;
+	cur->path_count++;
+	(*path_idx)++;
+}
+
+void	assign_path_group(t_path_group *best, t_path_group *cur)
+{
+	int	i;
+
+	best->line_count = cur->line_count;
+	best->path_count = cur->path_count;
+	best->tol_step = cur->tol_step;
+	i = 0;
+	while (i < best->path_count)
+	{
+		best->group[i] = cur->group[i];
+		i++;
+	}
+}
+
+/* void	retrace_rooms(t_path *cur_path, int reached_room)
 {
 	int	i;
 
@@ -64,7 +123,7 @@ int	check_path(t_path *path, int path_idx)
 	return (0);
 }
 
-/*void	path_expansion_jutsu(t_path *path, int path_amt)
+void	path_expansion_jutsu(t_path *path, int path_amt)
 {
 	int	i;
 	int	j;

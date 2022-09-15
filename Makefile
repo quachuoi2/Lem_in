@@ -6,27 +6,39 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/09/04 03:16:33 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/09/15 18:11:55 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = lem_in
-SRCS = main.c error.c get.c utilities.c algo.c free.c quicksort.c \
-		flow.c traveler.c path_utilities.c trash_algo.c
+NAME = a.out
+#change name
+#change name
+FILE = main error get utilities free bfs path_utilities algo
+#  dfs quicksort flow traveler  trash_algo
+SRCS = srcs/
+O_DIR = objs/
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes/
 LIB = -L ./lib -lftprintf
+OPTIMIZATION = -Ofast
 
 all: $(NAME)
 
-$(NAME):
-	gcc -g $(addprefix srcs/, $(SRCS)) $(LIB) $(INCLUDES)
+$(NAME): $(addprefix $(O_DIR), $(addsuffix .o, $(FILE)))
+	gcc $^ $(LIB) $(INCLUDES) #-o $(NAME)
+
+$(O_DIR)%.o: $(SRCS)%.c $(SRCS)lem_in.h
+	@mkdir -p $(O_DIR)
+	gcc -c $< $(LIB) $(INCLUDES) -o $@ -g
 
 clean:
-	@/bin/rm -f $(wildcard *.o)
+	@rm -rf $(O_DIR)
+	@rm -f $(wildcard *.o)
 
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@/bin/rm -f a.out
 
 re: fclean all
+
+.PHONY: all clean fclean re

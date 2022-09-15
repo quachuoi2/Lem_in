@@ -6,57 +6,39 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/04 03:16:12 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/15 18:39:10 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	conclude_path(t_path *path, int room_idx)
+void	line_count(t_path_group *cur, t_path *path, int max_ant)
 {
-	int j;
+	int	line;
+	int	step;
+	int	group_idx;
 
-	j = 0;
-	while (j < room_idx)
+	step = 0;
+	group_idx = 0;
+	line = path[cur->group[group_idx]].steps;
+	while (max_ant)
 	{
-		if (path[g_final_idx].room[j] == 0)
-			path[g_final_idx].room[j] = path[g_final_idx - 1].room[j];
-		j++;
-	}
-	path[g_final_idx].room[room_idx + 1] = 0;
-	path[g_final_idx].steps = j;
-	path[g_final_idx].ant_count = 0;
-	(g_final_idx)++;
-/* 	if (*g_final_idx % NUM_OF_PATH == 0)
-		path_expansion_jutsu(path, NUM_OF_PATH * ((*g_final_idx / NUM_OF_PATH) + 1)); */
-}
-
-void	traceroute(t_path *path, t_room *room, int *room_idx)
-{
-	t_rlist *temp = room->links;
-
-	if (room->state == END_ROOM)
-	{
-		path[g_final_idx].room[*room_idx] = room;
-		conclude_path(path, *room_idx);
-		return;
-	}
-	room->crossed = 1;
-	while (temp)
-	{
-		if (temp->room->crossed == 0)
+		while (group_idx + 1 < cur->path_count && line >= path[cur->group[group_idx + 1]].steps && step == 0) //move through all the paths with the same amt of steps
+			group_idx++;
+		path[cur->group[step]].ant_count++; //every path gets +1 ant before +1 line
+		step++; //every path gets +1 ant before +1 line
+		if (step > group_idx)  //reset when each path got +1 ant //step == group_idx + 1
 		{
-			path[g_final_idx].room[*room_idx] = room;
-			(*room_idx)++;
-			traceroute(path, temp->room, room_idx);
-			(*room_idx)--;
+			line++;
+			step = 0;
 		}
-		temp = temp->next;
+		max_ant--;
 	}
-	room->crossed = 0;
+	cur->line_count = line - 1;
+	//return (group_idx + 1); //+1 because returning flow amount, not index
 }
 
-void	lemme_in(t_room *room, t_path *path, int ant_num)
+/* void	lemme_in(t_room *room, t_path *path, int ant_num)
 {
 	int	room_idx;
 	int	*best_path;
@@ -72,4 +54,4 @@ void	lemme_in(t_room *room, t_path *path, int ant_num)
 	max_flow_path(path, best_path, target_flow_count(path, best_path, ant_num), 2);
 	exotic_ant_traveler(path, best_path, ant_num, target_flow_count(path, best_path, ant_num));
 	//free best path
-}
+} */
