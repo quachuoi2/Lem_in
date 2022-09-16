@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/16 11:14:11 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/16 15:30:47 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,20 @@ struct s_room
 	int		coord_x;
 	int		coord_y;
 	int		state;
-	int		crossed;
-	char	*name;
+	int		occupied;
 	int		path_idx;
-	t_edge	*edge;
+	char	*name;
+	t_edge	*forward;
+	t_edge	*backward;
 	t_rlist	*links;
+};
+
+struct s_edge
+{
+	int		crossed;
+	int		flow;
+	t_room	*from;	//normally, edge.from is the current room, edge.to is the next room
+	t_room	*to;
 };
 
 struct s_rlist
@@ -60,12 +69,6 @@ struct s_path_group
 	int		path_count;
 	int		line_count;
 	int		*group;
-};
-
-struct s_edge
-{
-	t_room	*from;
-	t_room	*to;
 };
 
 //get.c

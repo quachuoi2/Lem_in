@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 18:08:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/16 16:01:40 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main()
 	int		fd;
 	t_rlist	*list;
 	t_room	*start;
-	t_path	*path;
 
 	fd = open("./testmap/cross", O_RDONLY);
 	fd = 0;
@@ -31,9 +30,25 @@ int	main()
 	get_data(&ant_num, fd, &list);
 	check_start_end_room(list, &start);
 	bfs(start, ant_num);
-	// initialize_paths(&path);
 	// lemme_in(start, path, ant_num);
-	free_everything(list);
+
+	printf("%s - ", start->name);
+	t_room *temp;
+	while (start->links)
+	{
+		temp = start->links->room;
+		if (temp->forward)
+		{
+			while (temp->state != END_ROOM)
+			{
+				printf("%s - ", temp->name);
+				temp = temp->forward->to;
+			}
+		}
+		start->links = start->links->next;
+	}
+	printf("%s\n", temp->name);
+	//free_everything(list);
 	//free path
 	return (0);
 }
