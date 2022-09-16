@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 20:17:50 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/16 11:14:11 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ struct s_path_group
 
 struct s_edge
 {
-	t_room	*b4from;
-	t_room	*current;
+	t_room	*from;
 	t_room	*to;
 };
 
@@ -94,9 +93,9 @@ void	line_count(t_path_group *cur, t_path *path, int max_ant);
 //void	lemme_in(t_room *room, t_path *path, int ant_num);
 
 //path_utilities.c
-void	assign_edge_to_room(t_room *room, t_edge *edge);
 void	init_path_groups(t_path_group *group);
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx);
-void	assign_path_group(t_path_group *best, t_path_group *cur);
+void	assign_best_group(t_path_group *best, t_path_group *cur);
+void	assign_rev_queue(t_edge *rev, t_edge *queue);
 
 #endif

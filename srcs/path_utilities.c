@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 21:26:07 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 20:18:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/16 11:10:17 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	init_path_groups(t_path_group *group)
 	group->group = ft_memalloc(sizeof(int) * MAGIC_NUMBER);
 }
 
-void	assign_edge_to_room(t_room *room, t_edge *edge)
-{
-	room->edge = edge;
-}
-
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx)
 {
 	cur->group[cur->path_count] = *path_idx;
@@ -33,7 +28,7 @@ void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx)
 	(*path_idx)++;
 }
 
-void	assign_path_group(t_path_group *best, t_path_group *cur)
+void	assign_best_group(t_path_group *best, t_path_group *cur)
 {
 	int	i;
 
@@ -46,6 +41,12 @@ void	assign_path_group(t_path_group *best, t_path_group *cur)
 		best->group[i] = cur->group[i];
 		i++;
 	}
+}
+
+void	assign_rev_queue(t_edge *rev, t_edge *queue)
+{
+	rev->from = queue->to;
+	rev->to = queue->from;
 }
 
 /* void	retrace_rooms(t_path *cur_path, int reached_room)
