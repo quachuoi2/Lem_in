@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/18 21:50:22 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/19 12:07:26 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void bfs(t_edge *start, int ant)
 	queue[0] = start;
 	while (q_rem--)
 	{
-		printf("%s - %s\n", queue[q_idx]->from->name, queue[q_idx]->to->name);
+		//printf("%s - %s\n", queue[q_idx]->from->name, queue[q_idx]->to->name);
 		if (queue[q_idx]->to->state != END_ROOM)
 		{
 			if (queue[q_idx]->to->visited != VISITED)
@@ -41,7 +41,7 @@ void bfs(t_edge *start, int ant)
 				if (queue[q_idx]->to->occupied == UNOCCUPIED) //change all to dispatch table?
 				{
 					if (queue[q_idx]->to->forward_list == NULL)
-						q_rem += search_free_link(queue, &q_count, q_idx, UNVISITED);
+						q_rem += search_free_link(queue, &q_count, q_idx);
 					else
 						q_rem += search_forward(queue, &q_count, q_idx);
 				}

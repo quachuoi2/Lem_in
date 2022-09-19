@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/18 21:30:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/19 12:27:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ int	main()
 	//bfs(start, ant_num);
 	// lemme_in(start, path, ant_num);
 
-/* 	printf("res: %s - ", start->name);
+
+	//room 1's forward is connected to 2 room 5s
+	//room 1's forward to x flow is still 1
 	while (start->forward_list)
 	{
+		printf("res: %s - ", start->name);
 		t_edge *temp = start->forward_list;
 		while (temp)
 		{
@@ -53,7 +56,8 @@ int	main()
 				temp = temp->next;
 		}
 		start->forward_list = start->forward_list->next;
-	} */
+		printf("\n");
+	}
 	//free_everything(list);
 	//free path
 	return (0);

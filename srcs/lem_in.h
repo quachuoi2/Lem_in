@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/18 19:05:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/19 12:07:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx);
 void	augment(t_edge **rev_edge, int i, int path_idx);
 
 //search.c
-int		search_free_link(t_edge **queue, int *q_count, int idx, int unvisited_or_unoccupied);
+int		search_free_link(t_edge **queue, int *q_count, int idx);
 int		search_forward(t_edge **queue, int *q_count, int idx);
 int		search_backward(t_edge **queue, int *q_count, int idx);
 
