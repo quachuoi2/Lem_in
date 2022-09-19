@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 21:26:07 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/16 11:10:17 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/18 21:37:07 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,84 +43,90 @@ void	assign_best_group(t_path_group *best, t_path_group *cur)
 	}
 }
 
-void	assign_rev_queue(t_edge *rev, t_edge *queue)
+int	path_clear(t_edge **rev_edge, int i)
 {
-	rev->from = queue->to;
-	rev->to = queue->from;
-}
+	int j;
+	int ret = 1;
+	char *s, *t;
+	int f, p;
 
-/* void	retrace_rooms(t_path *cur_path, int reached_room)
-{
-	int	i;
-
-	i = 1;
-	while (i < reached_room)
-		cur_path->room[i++]->state = VACANT_ROOM;
-}
-
-void	retrace_all_path(t_path *path, int *temp_path, int flow)
-{
-	int	i;
-
-	i = 0;
-	while (i < flow)
+	j = 0;
+	//printf("%s -> %s = %d\n", rev_edge[j]->from->name, rev_edge[j]->to->name, rev_edge[j]->flow);
+	printf("re: %s - ", rev_edge[j]->from->name);
+	while (++j < i)
 	{
-		retrace_rooms(&path[temp_path[i]], path[temp_path[i]].steps);
-		path[temp_path[i]].ant_count = 0;
-		i++;
-	}
-}
-
-void	assign_path(int *dest_path, int *src_path, int flow)
-{
-	ft_memcpy(dest_path, src_path, flow * sizeof(int));
-	dest_path[flow] = -1;
-}
-
-int	path_room_count(t_path *path, int *path_idx, int flow)
-{
-	int	i;
-	int	room_count;
-
-	i = 0;
-	room_count = 0;
-	while (i < flow)
-		room_count += path[path_idx[i++]].steps;
-	return (room_count);
-}
-
-int	check_path(t_path *path, int path_idx)
-{
-	int i = 1;
-
-	while (i < path[path_idx].steps && path[path_idx].room[i]->state != OCCUPIED_ROOM)
-		path[path_idx].room[i++]->state = OCCUPIED_ROOM;
-	if (i == path[path_idx].steps)
-		return (1);
-	retrace_rooms(&path[path_idx], i);
-	return (0);
-}
-
-void	path_expansion_jutsu(t_path *path, int path_amt)
-{
-	int	i;
-	int	j;
-	char **temp_rooms;
-
-	i = 0;
-	while (path[i].room[0])
-	{
-		temp_rooms = ft_memalloc(sizeof(char *) * NUM_OF_ROOM_PER_PATH);
-		j = 0;
-		while (path[i].room[j])
+		//printf("%s -> %s = %d\n", rev_edge[j]->from->name, rev_edge[j]->to->name, rev_edge[j]->flow);
+		printf("%s - ", rev_edge[j]->from->name);
+		if (ret == 1 && rev_edge[j]->to->path_idx != -1)
 		{
-			temp_rooms[j] = ft_strdup(path[i].room[j]);
-			free(path[i].room[j]);
-			path[i].room[j] = temp_rooms[i];
-			j++;
+			s = rev_edge[j + 1]->from->name;
+			t = rev_edge[j + 1]->to->name;
+			p = rev_edge[j + 1]->from->path_idx;
+			f = rev_edge[j + 1]->flow;
+			if (f == -1)
+				ret = 2;
+			else
+				ret = 0;
 		}
-		free(path[i].room);
-		path[i].room = temp_rooms;
-		i++;
 	}
-} */
+	printf("%s\n", rev_edge[j - 1]->to->name);
+	if (ret == 0)
+		printf("clahsed at room: %s -> %s = %d\n", s, t, f);
+	return (ret);
+}
+
+void	augment(t_edge **rev_edge, int i, int path_idx)
+{
+	t_room	*room;
+
+	//printf("%s - ", rev_edge[i]->to->name);
+
+	t_edge *temp = rev_edge[i]->to->forward_list;
+	while (temp->to != rev_edge[i]->from)
+		temp = temp->next;
+	temp->flow = 1;
+	while (i > 0)
+	{
+		room = rev_edge[i]->from;
+		temp = room->forward_list;
+		while (temp->to != rev_edge[i - 1]->from) // to set the forward edge flow to 1 //find a better way to do this instead of looping through all the forward links (hash map?)
+			temp = temp->next;
+		temp->flow = 1;
+
+		room->backward = new_edge(rev_edge[i]->from, rev_edge[i]->to);
+		room->backward->flow = -1;
+		room->occupied = OCCUPIED;
+		room->path_idx = path_idx;
+		//printf("%s - ", rev_edge[i]->from->name);
+		i--;
+	}
+	//printf("%s\n", rev_edge[i]->from->name);
+}
+
+int conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx)
+{
+	int step_count;
+	int i = 0;
+	t_room *current_tar;
+	t_edge *rev_edge[revq_idx];
+
+	step_count = 1;
+	current_tar = rev_queue[revq_idx].to;
+	rev_edge[i++] = &rev_queue[revq_idx];
+	while (rev_queue[revq_idx].from->state != START_ROOM) //retrace the path found
+	{
+		if (rev_queue[revq_idx].from == current_tar)
+		{
+			rev_edge[i++] = &rev_queue[revq_idx];
+			current_tar = rev_queue[revq_idx].to;
+			step_count++;
+		}
+		revq_idx--;
+	}
+	if (path_clear(rev_edge, i) == 0)
+		return (0);
+	augment(rev_edge, i - 1, path_idx);
+	path[path_idx].steps = step_count;
+	path[path_idx].ant_count = 0;
+	return (1);
+}

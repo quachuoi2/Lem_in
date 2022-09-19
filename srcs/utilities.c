@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/15 17:03:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/18 19:05:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,32 @@ void	add_room_list(t_room *room, t_rlist **list)
 	*list = current;
 }
 
+t_edge	*add_elist(t_room *from_room, t_room *to_room)
+{
+	t_edge *new;
+
+	new = new_edge(from_room, to_room);
+	new->next = from_room->forward_list;
+	from_room->forward_list = new;
+	return (new);
+}
+
+t_edge	*new_edge(t_room *from_room, t_room *to_room)
+{
+	t_edge *new;
+
+	new = ft_memalloc(sizeof(t_edge));
+	edge_assign(new, from_room, to_room, 0);
+	new->next = NULL;
+	return (new);
+}
+
+void	edge_assign(t_edge *edge, t_room *from, t_room *to, int flow)
+{
+	edge->from = from;
+	edge->to = to;
+	edge->flow = flow;
+}
 
 //deletable below
 /*void	initialize_best_path(int **best_path)

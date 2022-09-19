@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/16 15:30:47 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/18 19:05:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,21 @@
 
 # define START_ROOM -2
 # define END_ROOM -1
-# define VACANT_ROOM 0
-# define OCCUPIED_ROOM 1
+# define UNOCCUPIED 0
+# define OCCUPIED 1
+# define UNVISITED 1
 # define MAGIC_NUMBER 3000
+
+extern int	VISITED;
 
 typedef struct s_room t_room;
 typedef struct s_rlist t_rlist;
 typedef struct s_path t_path;
 typedef struct s_edge t_edge;
+typedef struct s_elist t_elist;
 typedef struct s_path_group t_path_group;
 
-extern int	g_final_idx;
+extern t_path_group best;
 
 struct s_room
 {
@@ -36,19 +40,22 @@ struct s_room
 	int		coord_y;
 	int		state;
 	int		occupied;
+	int		visited;
 	int		path_idx;
 	char	*name;
-	t_edge	*forward;
+	//t_edge	*forward;
 	t_edge	*backward;
+	t_edge	*forward_list;
 	t_rlist	*links;
 };
 
 struct s_edge
 {
-	int		crossed;
+	//int		crossed;
 	int		flow;
-	t_room	*from;	//normally, edge.from is the current room, edge.to is the next room
+	t_room	*from;
 	t_room	*to;
+	t_edge	*next;
 };
 
 struct s_rlist
@@ -61,6 +68,7 @@ struct s_path
 {
 	int		steps;
 	int		ant_count;
+	t_room	*first_room; //to trace the rooms in the path via forward
 };
 
 struct s_path_group
@@ -86,10 +94,12 @@ void	free_everything(t_rlist *list);
 
 //utilities.c
 void	add_room_list(t_room *room, t_rlist **list);
+t_edge	*add_elist(t_room *from_room, t_room *to_room);
+t_edge	*new_edge(t_room *cur_room, t_room *to_room);
+void	edge_assign(t_edge *edge, t_room *from, t_room *to, int flow);
 
 //bfs.c
-void	bfs(t_room *room, int ant);
-void	conclude_path(t_edge *queue, int q_idx, t_path *path, int path_idx);
+void	bfs(t_edge *start, int ant);
 
 //algo.c
 void	line_count(t_path_group *cur, t_path *path, int max_ant);
@@ -99,6 +109,14 @@ void	line_count(t_path_group *cur, t_path *path, int max_ant);
 void	init_path_groups(t_path_group *group);
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx);
 void	assign_best_group(t_path_group *best, t_path_group *cur);
-void	assign_rev_queue(t_edge *rev, t_edge *queue);
+int		conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx);
+void	augment(t_edge **rev_edge, int i, int path_idx);
 
+//search.c
+int		search_free_link(t_edge **queue, int *q_count, int idx, int unvisited_or_unoccupied);
+int		search_forward(t_edge **queue, int *q_count, int idx);
+int		search_backward(t_edge **queue, int *q_count, int idx);
+
+// delet nao
+void room_bfs(t_room *start, int ant);
 #endif
