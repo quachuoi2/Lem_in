@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/18 19:05:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/20 13:35:57 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	add_room_list(t_room *room, t_rlist **list)
 	current = (t_rlist *)malloc(sizeof(t_rlist));
 	current->room = room;
 	current->next = *list;
+	current->forw_list_created = 0;
 	*list = current;
 }
 

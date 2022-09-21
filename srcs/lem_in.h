@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/19 12:07:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/21 22:17:29 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 # include "get_next_line.h"
 # include <stdio.h> // delet nao
 
-# define START_ROOM -2
-# define END_ROOM -1
-# define UNOCCUPIED 0
-# define OCCUPIED 1
-# define UNVISITED 1
-# define MAGIC_NUMBER 3000
+# define START_ROOM -1
+# define END_ROOM 1
+# define NORMAL_ROOM 0
+# define UNVISITED 0
+# define USED_FORWARD 1
+# define BACKWARD -1
+# define UNUSED_FORWARD 0
+# define MAGIC_NUMBER 9000
 
 extern int	VISITED;
 
@@ -39,19 +41,17 @@ struct s_room
 	int		coord_x;
 	int		coord_y;
 	int		state;
-	int		occupied;
 	int		visited;
 	int		path_idx;
+	int		up_for_grabz;
 	char	*name;
-	//t_edge	*forward;
-	t_edge	*backward;
+	t_room	*prev;
 	t_edge	*forward_list;
 	t_rlist	*links;
 };
 
 struct s_edge
 {
-	//int		crossed;
 	int		flow;
 	t_room	*from;
 	t_room	*to;
@@ -60,6 +60,7 @@ struct s_edge
 
 struct s_rlist
 {
+	int		forw_list_created;
 	t_room	*room;
 	t_rlist	*next;
 };
@@ -99,7 +100,7 @@ t_edge	*new_edge(t_room *cur_room, t_room *to_room);
 void	edge_assign(t_edge *edge, t_room *from, t_room *to, int flow);
 
 //bfs.c
-void	bfs(t_edge *start, int ant);
+int	bfs(t_edge *start, int ant);
 
 //algo.c
 void	line_count(t_path_group *cur, t_path *path, int max_ant);
@@ -110,13 +111,10 @@ void	init_path_groups(t_path_group *group);
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx);
 void	assign_best_group(t_path_group *best, t_path_group *cur);
 int		conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx);
-void	augment(t_edge **rev_edge, int i, int path_idx);
 
 //search.c
 int		search_free_link(t_edge **queue, int *q_count, int idx);
 int		search_forward(t_edge **queue, int *q_count, int idx);
 int		search_backward(t_edge **queue, int *q_count, int idx);
 
-// delet nao
-void room_bfs(t_room *start, int ant);
 #endif

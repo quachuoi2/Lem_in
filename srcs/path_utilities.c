@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 21:26:07 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/19 16:40:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/21 22:17:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,77 +43,97 @@ void	assign_best_group(t_path_group *best, t_path_group *cur)
 	}
 }
 
-int	path_clear(t_edge **rev_edge, int i)
+static int	path_clear_with_printing(t_edge **rev_edge, int i)
 {
 	int j;
-	int ret;
-	char *s, *t;
-	int f, p;
-
+	int ret = 1;
+	t_room *fail;
 	j = 0;
-	ret = 1;
+
 	printf("%s -> %s = %d\n", rev_edge[j]->from->name, rev_edge[j]->to->name, rev_edge[j]->flow);
-	// printf("re: %s - ", rev_edge[j]->from->name);
+	//printf("re: %s - ", rev_edge[j]->from->name);
 	while (++j < i)
 	{
 		printf("%s -> %s = %d\n", rev_edge[j]->from->name, rev_edge[j]->to->name, rev_edge[j]->flow);
 		// printf("%s - ", rev_edge[j]->from->name);
-		if (ret == 1 && rev_edge[j]->to->path_idx != -1)
+		if (rev_edge[j]->from->prev && rev_edge[j]->from->prev == rev_edge[j]->to) // if there is a backward edge that matches this rev_edge ->fail
 		{
-			s = rev_edge[j + 1]->from->name;
-			t = rev_edge[j + 1]->to->name;
-			p = rev_edge[j + 1]->from->path_idx;
-			f = rev_edge[j + 1]->flow;
-			if (f == -1)
-				ret = 2;
-			else
-				ret = 0;
+			ret = 0;
+			fail = rev_edge[j]->from;
+			//return (0);
 		}
 	}
 	// printf("%s\n", rev_edge[j - 1]->to->name);
 	if (ret == 0)
-		printf("clahsed at room: %s -> %s = %d\n", s, t, f);
+		printf("clahsed at room: %s\n", fail->name);
 	return (ret);
+}
+
+static int	path_clear_actual(t_edge **rev_edge, int i)
+{
+	int j;
+
+	j = 0;
+	while (++j < i)
+		if (rev_edge[j]->from->prev && rev_edge[j]->from->prev == rev_edge[j]->to) // if there is a backward edge that matches this rev_edge ->fail
+			return (0);
+	return (1);
+}
+
+static void	unset_flow(t_edge *list, t_room *target_room)
+{
+	while (list->to != target_room) //loop to forward links to find the room to remove flow
+		list = list->next;
+	list->flow = UNUSED_FORWARD;
 }
 
 void	delete_residual_edge(t_edge *edge)
 {
-	t_edge	*temp;
-
-	temp = edge->from->forward_list;
-	while (temp->to != edge->to) //loop to forward links to find the room to remove flow
-		temp = temp->next;
-
-	temp->flow = 0;
-	ft_memdel((void **)&edge->to->backward);
+	unset_flow(edge->from->forward_list, edge->to);
+	edge->to->prev = 0;
 }
 
-void	augment(t_edge **rev_edge, int rev_count, int path_idx)
+int	augment(t_edge **rev_edge, int rev_count, int path_idx)
 {
 	t_room	*room;
-	t_edge *temp;
-	int i;
+	t_edge	*temp;
+	int		backward_edge_used;
+	int		i;
 
 	i = 0;
+	backward_edge_used = 1;
 	while (i <= rev_count)
 	{
-		if (rev_edge[i]->flow != -1)
+		if (rev_edge[i]->flow == BACKWARD)
 		{
-			temp = rev_edge[i]->to->forward_list;
-			while (temp && temp->to != rev_edge[i]->from) // to set the forward edge flow to 1 //find a better way to do this instead of looping through all the forward links (hash map?)
-				temp = temp->next;
-			temp->flow = 1;
-			room = rev_edge[i]->from;
-			room->backward = new_edge(rev_edge[i]->from, rev_edge[i]->to);
-			room->backward->flow = -1;
-			room->occupied = OCCUPIED;
-			room->path_idx = path_idx;
+			delete_residual_edge(rev_edge[i]);
+			backward_edge_used = 0;
 		}
 		else
-			delete_residual_edge(rev_edge[i]);
+		{
+			temp = rev_edge[i]->to->forward_list;
+			while (temp) // to set the forward edge flow to 1 //find a better way to do this instead of looping through all the forward links (hash map?)
+			{
+				if (temp->to == rev_edge[i]->from)
+					temp->flow = USED_FORWARD; //this one is the edge to the new found room
+				else if (temp->flow == USED_FORWARD && temp->from->state != START_ROOM)
+				{
+					temp->flow = UNUSED_FORWARD; // delete forward flow of the old path
+					temp->to->up_for_grabz = -1;
+					temp->to->prev = 0;
+				}// might not be needed
+				temp = temp->next;
+			}
+			room = rev_edge[i]->from;
+			if (!room->prev)
+				room->prev = rev_edge[i]->to;
+			room->up_for_grabz = 0;
+		}
 		printf("%s - ", rev_edge[i]->from->name);
 		i++;
 	}
+	printf("%s\n", rev_edge[i - 1]->to->name);
+	return (backward_edge_used);
 }
 
 int conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx)
@@ -137,11 +157,12 @@ int conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx)
 		}
 		revq_idx--;
 	}
-	path_type = path_clear(rev_edge, i);
-	if (path_type == 0)
+	if (path_clear_with_printing(rev_edge, i) == 0)
+	// if (path_clear_actual(rev_edge, i) == 0)
 		return (0);
-	augment(rev_edge, i - 1, path_idx);
-	path[path_idx].steps = step_count;
+	printf("path found UwU\n");
+	if (augment(rev_edge, i - 1, path_idx)) //if used only foward edges
+		path[path_idx].steps = step_count;
 	path[path_idx].ant_count = 0;
 	return (1);
 }

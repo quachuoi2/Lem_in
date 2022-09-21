@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/19 12:27:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/21 22:02:25 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,25 @@
 int VISITED = 1;
 t_path_group best;
 
+static void print_path(t_room *start)
+{
+	if (start->state == END_ROOM)
+	{
+		printf("%s\n", start->name);
+		return ;
+	}
+	t_edge *temp = start->forward_list;
+	while (temp)
+	{
+		if (temp->flow == USED_FORWARD)
+		{
+			printf("%s - ", start->name);
+			print_path(temp->to);
+		}
+		temp = temp->next;
+	}
+}
+
 int	main()
 {
 	int		ant_num;
@@ -28,36 +47,21 @@ int	main()
 
 	fd = 0;
 	fd = open("./testmap/cross", O_RDONLY);
+	fd = open("./testmap/extra/augment_2.map", O_RDONLY);
+
 	list = NULL;
 	get_data(&ant_num, fd, &list);
 	check_start_end_room(list, &start);
 	start_edge->from = start;
 	start_edge->to = start;
-	bfs(start_edge, ant_num);
-	bfs(start_edge, ant_num);
-	//bfs(start, ant_num);
-	// lemme_in(start, path, ant_num);
 
+	int time = 1;
+	while(bfs(start_edge, ant_num))
+	 	printf("\nran %d time\n", time++);
 
-	//room 1's forward is connected to 2 room 5s
-	//room 1's forward to x flow is still 1
-	while (start->forward_list)
-	{
-		printf("res: %s - ", start->name);
-		t_edge *temp = start->forward_list;
-		while (temp)
-		{
-			if (temp->flow == 1)
-			{
-				printf("%s - ", temp->to->name);
-				temp = temp->to->forward_list;
-			}
-			else
-				temp = temp->next;
-		}
-		start->forward_list = start->forward_list->next;
-		printf("\n");
-	}
+	printf("\n");
+	printf("\n");
+	print_path(start);
 	//free_everything(list);
 	//free path
 	return (0);
