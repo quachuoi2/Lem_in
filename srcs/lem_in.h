@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/21 22:17:29 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/22 19:36:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define UNUSED_FORWARD 0
 # define MAGIC_NUMBER 9000
 
-extern int	VISITED;
+extern int	CROSSED;
 
 typedef struct s_room t_room;
 typedef struct s_rlist t_rlist;
@@ -33,6 +33,7 @@ typedef struct s_path t_path;
 typedef struct s_edge t_edge;
 typedef struct s_elist t_elist;
 typedef struct s_path_group t_path_group;
+typedef struct s_edge_idx t_edge_idx ;
 
 extern t_path_group best;
 
@@ -41,9 +42,7 @@ struct s_room
 	int		coord_x;
 	int		coord_y;
 	int		state;
-	int		visited;
 	int		path_idx;
-	int		up_for_grabz;
 	char	*name;
 	t_room	*prev;
 	t_edge	*forward_list;
@@ -52,6 +51,7 @@ struct s_room
 
 struct s_edge
 {
+	int		crossed;
 	int		flow;
 	t_room	*from;
 	t_room	*to;
@@ -110,11 +110,10 @@ void	line_count(t_path_group *cur, t_path *path, int max_ant);
 void	init_path_groups(t_path_group *group);
 void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx);
 void	assign_best_group(t_path_group *best, t_path_group *cur);
-int		conclude_path(t_edge *rev_queue, int revq_idx, t_path *path, int path_idx);
+int	 	conclude_path(t_edge **queue, int *tracer, int q_idx);
 
 //search.c
-int		search_free_link(t_edge **queue, int *q_count, int idx);
-int		search_forward(t_edge **queue, int *q_count, int idx);
-int		search_backward(t_edge **queue, int *q_count, int idx);
+int 	search_free_link(t_edge **queue, int *q_count, int idx, int *tracer);
+int		search_forward(t_edge **queue, int *q_count, int idx, int *tracer);
 
 #endif

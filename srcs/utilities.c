@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/20 13:35:57 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/22 15:32:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	edge_assign(t_edge *edge, t_room *from, t_room *to, int flow)
 	edge->from = from;
 	edge->to = to;
 	edge->flow = flow;
+	edge->crossed = 0;
 }
 
 //deletable below

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/21 22:02:25 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/22 19:36:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-int VISITED = 1;
+int CROSSED = 1;
 t_path_group best;
 
 static void print_path(t_room *start)
@@ -47,18 +47,18 @@ int	main()
 
 	fd = 0;
 	fd = open("./testmap/cross", O_RDONLY);
-	fd = open("./testmap/extra/augment_2.map", O_RDONLY);
+	fd = open("./testmap/extra/augment_4.map", O_RDONLY);
 
 	list = NULL;
 	get_data(&ant_num, fd, &list);
 	check_start_end_room(list, &start);
 	start_edge->from = start;
 	start_edge->to = start;
-
+	start_edge->crossed = 0;
+	init_path_groups(&best);
 	int time = 1;
 	while(bfs(start_edge, ant_num))
 	 	printf("\nran %d time\n", time++);
-
 	printf("\n");
 	printf("\n");
 	print_path(start);
