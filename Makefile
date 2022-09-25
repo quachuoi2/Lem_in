@@ -6,14 +6,14 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/09/19 19:13:50 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/09/24 19:52:34 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = a.out
 #change name
 #change name
-FILE = main error get utilities free bfs path_utilities algo search
+FILE = main error get utilities free bfs path_utilities algo search edmond_karp_utils
 #room_bfs
 #  dfs quicksort flow traveler  trash_algo
 SRCS = srcs/

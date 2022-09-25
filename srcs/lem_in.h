@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/22 19:36:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/24 20:14:53 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ typedef struct s_rlist t_rlist;
 typedef struct s_path t_path;
 typedef struct s_edge t_edge;
 typedef struct s_elist t_elist;
-typedef struct s_path_group t_path_group;
 typedef struct s_edge_idx t_edge_idx ;
-
-extern t_path_group best;
+typedef struct s_counter t_counter;
 
 struct s_room
 {
@@ -43,8 +41,10 @@ struct s_room
 	int		coord_y;
 	int		state;
 	int		path_idx;
+	int		step_count;
 	char	*name;
 	t_room	*prev;
+	t_room	*next;
 	t_edge	*forward_list;
 	t_rlist	*links;
 };
@@ -58,6 +58,12 @@ struct s_edge
 	t_edge	*next;
 };
 
+struct s_counter
+{
+	int idx;
+	int step_count;
+};
+
 struct s_rlist
 {
 	int		forw_list_created;
@@ -69,15 +75,7 @@ struct s_path
 {
 	int		steps;
 	int		ant_count;
-	t_room	*first_room; //to trace the rooms in the path via forward
-};
-
-struct s_path_group
-{
-	int		tol_step;
-	int		path_count;
-	int		line_count;
-	int		*group;
+	t_room	**huone; //to trace the rooms in the path via forward
 };
 
 //get.c
@@ -100,20 +98,19 @@ t_edge	*new_edge(t_room *cur_room, t_room *to_room);
 void	edge_assign(t_edge *edge, t_room *from, t_room *to, int flow);
 
 //bfs.c
-int	bfs(t_edge *start, int ant);
+int		bfs(t_edge *start, int ant);
 
 //algo.c
-void	line_count(t_path_group *cur, t_path *path, int max_ant);
-//void	lemme_in(t_room *room, t_path *path, int ant_num);
 
 //path_utilities.c
-void	init_path_groups(t_path_group *group);
-void	adjust_path_group(t_path_group *cur, t_path *path, int *path_idx);
-void	assign_best_group(t_path_group *best, t_path_group *cur);
-int	 	conclude_path(t_edge **queue, int *tracer, int q_idx);
 
 //search.c
-int 	search_free_link(t_edge **queue, int *q_count, int idx, int *tracer);
-int		search_forward(t_edge **queue, int *q_count, int idx, int *tracer);
+int 	search_free_link(t_edge **queue, int *q_count, int idx, t_counter *tracer);
+int		search_forward(t_edge **queue, int *q_count, int idx, t_counter *tracer);
 
+//edmond_karp_utils.c
+void	set_flow(t_edge *list, t_room *target_room, int flow);
+void	delete_residual(t_room *room);
+void	remove_old_longer_path(t_room *room);
+void	update_step_count(t_room *room);
 #endif
