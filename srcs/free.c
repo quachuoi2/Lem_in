@@ -6,48 +6,43 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:04:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/16 09:12:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/01 06:39:53 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-/* void	free_old_arr(char ***arr)
+void	free_path(t_path **paths, int p_count)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (i < NUM_OF_PATH)
+	while (i < p_count)
 	{
-		j = 0;
-		while (j < NUM_OF_ROOM_PER_PATH)
-		{
-			ft_memdel((void **)&arr[i][j]);
-			j++;
-		}
-		ft_memdel((void **)&arr[i]);
+		ft_memdel((void **)&paths[i]->huone);
+		ft_memdel((void **)&paths[i]);
 		i++;
 	}
-} */
+}
 
-void	free_everything(t_rlist *list)
+void	free_everything(t_rlist *list, t_path **best_paths, int p_count)
 {
 	t_rlist	*temp;
-	t_rlist	*temp2;
+	t_edge	*e_temp;
 
 	while (list)
 	{
 		temp = list->next;
-		free(list->room->name);
-		while (list->room->links)
+		ft_memdel((void **)&list->room->name);
+		while (list->room->edge)
 		{
-			temp2 = list->room->links->next;
-			free(list->room->links);
-			list->room->links = temp2;
+			e_temp = list->room->edge->next;
+			ft_memdel((void **)&list->room->edge);
+			list->room->edge = e_temp;
 		}
-		free(list->room);
-		free(list);
+		ft_memdel((void **)&list->room);
+		ft_memdel((void **)&list);
 		list = temp;
 	}
+	free_path(best_paths, p_count);
 }

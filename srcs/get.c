@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/23 23:27:39 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:51:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,6 @@ void	get_data(int *ants_num, int fd, t_rlist **list)
 	*ants_num = ft_atoi(line);
 	free(line);
 	get_rooms(list, fd);
-}
-
-void	assign_room(t_room **room, char *line)
-{
-	char	**split;
-
-	*room = (t_room *)malloc(sizeof(t_room));
-	split = ft_strsplit(line, ' ');
-	(*room)->name = ft_strdup(split[0]);
-	(*room)->coord_x = ft_atoi(split[1]);
-	(*room)->coord_y = ft_atoi(split[2]);
-	(*room)->state = NORMAL_ROOM;
-	(*room)->step_count = 0;
-	(*room)->path_idx = -1;
-	(*room)->prev = 0;
-	(*room)->next = 0;
-	(*room)->forward_list = NULL;
-	(*room)->links = NULL;
-	ft_arrdel(&split);
-}
-
-void	assign_start_end_room(t_room **room, char **line, int fd)
-{
-	int	start_end_state;
-
-	if ((*line)[2] == 's')
-		start_end_state = START_ROOM;
-	else
-		start_end_state = END_ROOM;
-	free(*line);
-	get_next_line(fd, line);
-	assign_room(room, *line);
-	(*room)->state = start_end_state;
 }
 
 void	get_rooms(t_rlist **list, int fd)
@@ -87,21 +54,6 @@ void	get_rooms(t_rlist **list, int fd)
 	}
 }
 
-void	check_link(t_room *a, t_room *b)
-{
-	t_rlist	*temp;
-
-	temp = a->links;
-	while (temp)
-	{
-		if (!ft_strcmp(a->links->room->name, b->name))
-			break;
-		temp = temp->next;
-	}
-	add_room_list(a, &(b->links));
-	add_room_list(b, &(a->links));
-}
-
 void	get_links(t_rlist *list, char *line, int fd)
 {
 	char	**split;
@@ -123,7 +75,7 @@ void	get_links(t_rlist *list, char *line, int fd)
 				r2 = list->room;
 			list = list->next;
 		}
-		check_link(r1, r2);
+		assign_edge(r1, r2);
 	}
 	ft_arrdel(&split);
 }
