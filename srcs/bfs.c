@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 04:19:20 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 05:22:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,9 @@ int bfs(t_edge *start)
 	int			q_count = 1;
 	int			q_idx = 0;
 	int			path_found = 0;
-	t_edge		**queue;
-	t_tracer	*tracer;
+	t_edge		*queue[MAGIC_NUMBER];
+	t_tracer	tracer[MAGIC_NUMBER];
 
-	queue = ft_memalloc(sizeof(t_edge *) * MAGIC_NUMBER);
-	tracer = ft_memalloc(sizeof(t_tracer) * MAGIC_NUMBER);
 	queue[0] = start;
 	tracer[0].step_count = 0;
 	while (q_rem--)
@@ -107,7 +105,5 @@ int bfs(t_edge *start)
 		q_idx++;
 	}
 	CROSSED++;
-	ft_memdel((void **)&queue);
-	ft_memdel((void **)&tracer);
 	return (path_found);
 }

@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/01 09:58:32 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/03 07:31:03 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = a.out
 #change name
 #change name
 FILE = main error get utilities free bfs algo search augment_utils augment \
-		assign quicksort
+		assign quicksort algo_utils traveler
 SRCS = srcs/
 O_DIR = objs/
 FLAGS = -Wall -Wextra -Werror

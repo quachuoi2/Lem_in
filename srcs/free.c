@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:04:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/01 06:39:53 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 04:41:09 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_path(t_path **paths, int p_count)
 	}
 }
 
-void	free_everything(t_rlist *list, t_path **best_paths, int p_count)
+void	free_everything(t_rlist *list)
 {
 	t_rlist	*temp;
 	t_edge	*e_temp;
@@ -44,5 +44,5 @@ void	free_everything(t_rlist *list, t_path **best_paths, int p_count)
 		ft_memdel((void **)&list);
 		list = temp;
 	}
-	free_path(best_paths, p_count);
+	free_path(best_paths, best_p_count);
 }

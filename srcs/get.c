@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 07:05:33 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/26 17:51:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 07:47:23 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	get_data(int *ants_num, int fd, t_rlist **list)
 	get_next_line(fd, &line);
 	check_ants(line);
 	*ants_num = ft_atoi(line);
+	// printf("%s\n", line); //print map
 	free(line);
 	get_rooms(list, fd);
 }
@@ -42,10 +43,12 @@ void	get_rooms(t_rlist **list, int fd)
 			assign_start_end_room(&room, &line, fd);
 		if (room)
 			add_room_list(room, list);
+		// printf("%s\n", line); //print map
 		free(line);
 	}
 	while (*line) //also must stop when nonsense is entered
 	{
+		// printf("%s\n", line); //print map
 		if (*line != '#')
 			get_links(*list, line, fd);
 		free(line);
