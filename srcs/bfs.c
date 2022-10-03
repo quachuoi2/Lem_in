@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/01 09:47:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 04:19:20 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ static int conclude_path(t_edge **queue, t_tracer *tracer, int q_idx)
 	if (old_long_path_room != 0)
 		remove_old_longer_path(old_long_path_room); //and reconnect new room instead of pure_forward_augment
 	if (backward_edge_used == BACKWARD)
+	{
 		mixed_augment(rev_edge, revq_idx - 1);
+		return (-1);
+	}
 	else
 		pure_forward_augment(rev_edge, revq_idx - 1);
 	return (1);
@@ -91,10 +94,11 @@ int bfs(t_edge *start)
 			// printf("NV %d: %s -> %s = %d\n", q_idx, queue[q_idx]->from->name, queue[q_idx]->to->name, tracer[q_idx].step_count);
 			if (queue[q_idx]->to->state != END_ROOM)
 				q_rem += search_forward(queue, &q_count, q_idx, tracer);
-			else if (conclude_path(queue, tracer, q_idx) == 1)
+			else
 			{
-				path_found = 1;
-				break;
+				path_found = conclude_path(queue, tracer, q_idx);
+				if (path_found != 0)
+					break;
 			}
 			queue[q_idx]->crossed = CROSSED;
 		}

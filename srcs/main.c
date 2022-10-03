@@ -6,17 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/01 09:51:46 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 04:18:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 int CROSSED = 1;
-int time = 1;
 
 static void print_path(t_room *start)
 {
@@ -25,7 +21,7 @@ static void print_path(t_room *start)
 		if (start->edge->flow == 1)
 		{
 			t_room *room = start->edge->to;
-			printf("%d: %s - ", start->edge->to->path_steps, start->name);
+			printf("%s - ", start->name);
 			while (room->state != END_ROOM)
 			{
 				printf("%s - ", room->name);
@@ -69,8 +65,6 @@ int	main()
 	int		best_line_count;
 	t_path	*best_paths[MAGIC_NUMBER];
 
-	fd = open("./testmap/cross", O_RDONLY);
-	fd = open("./testmap/valid/map_33", O_RDONLY);
 	fd = 0;
 
 	list = NULL;
@@ -82,12 +76,13 @@ int	main()
 	best_line_count = 0;
 	best_p_count = 0;
 	int insta;
-	while(bfs(&start_edge))
+	int path_type;
+	while((path_type = bfs(&start_edge)))
 	{
+		// printf("PT: %d\n", path_type);
 		insta = lemme_in(start, best_paths, &best_line_count, &best_p_count, ant_num);
 		if (insta == -1)
 			break;
-		// printf("\nran %d time\n", time++);
 	}
 	// if (insta != -1)
 		// print_path_2(best_paths, best_p_count);

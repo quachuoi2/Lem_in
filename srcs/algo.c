@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/01 09:51:37 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 04:19:07 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,19 @@ static void	set_best_paths(t_path **best_paths, t_path **paths, int p_count)
 	}
 }
 
+static int	count_step(t_room *room)
+{
+	int	i;
+
+	i = 1;
+	while (room->state != END_ROOM)
+	{
+		room->step_count = i++;
+		room = room->next;
+	}
+	return (i);
+}
+
 static int set_paths(t_room *start, t_path **path)
 {
 	int	p_count;
@@ -97,7 +110,7 @@ static int set_paths(t_room *start, t_path **path)
 		{
 			path[p_count] = (t_path *)ft_memalloc(sizeof(t_path));
 			path[p_count]->ant_count = 0;
-			path[p_count]->steps = temp->to->path_steps;
+			path[p_count]->steps = count_step(temp->to);
 			path[p_count]->huone = ft_memalloc(sizeof(t_room *) * path[p_count]->steps);
 			path[p_count]->huone[0] = temp->to;
 			p_count++;
@@ -135,7 +148,7 @@ int	lemme_in(t_room *start, t_path **best_paths
 	int				p_count;
 	int				line_count;
 	static int		insta_finish;
-	t_path			*paths[50];
+	t_path			*paths[MAGIC_NUMBER];
 
 	p_count = set_paths(start, paths);
 	path_quicksort(paths, 0, p_count - 1);

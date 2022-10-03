@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/01 06:33:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/03 04:18:21 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 # include "libftprintf.h"
 # include "get_next_line.h"
 # include <stdio.h> // delet nao
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 # define START_ROOM -1
 # define END_ROOM 1
@@ -26,7 +30,6 @@
 # define MAGIC_NUMBER 30000
 
 extern int	CROSSED;
-extern int	time;
 
 typedef struct s_room t_room;
 typedef struct s_rlist t_rlist;
@@ -41,7 +44,6 @@ struct s_room
 	int		coord_x;
 	int		coord_y;
 	int		state;
-	int		path_steps;
 	int		step_count;
 	char	*name;
 	t_room	*prev;
@@ -120,7 +122,6 @@ void	set_flow(t_edge *list, t_room *target_room, int flow);
 void	delete_forward_room(t_room *room);
 void	delete_prev_room(t_room *room);
 void	remove_old_longer_path(t_room *room);
-void	update_step_count(t_edge *rev_edge, int i, int rev_idx);
 
 //quicksort.c
 void	path_quicksort(t_path **path, int low, int high);

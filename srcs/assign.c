@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/26 20:28:07 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/02 12:05:19 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	assign_room(t_room **room, char *line)
 	(*room)->coord_y = ft_atoi(split[2]);
 	(*room)->state = NORMAL_ROOM;
 	(*room)->step_count = 0;
-	(*room)->path_steps = 0;
 	(*room)->prev = NULL;
 	(*room)->next = NULL;
 	(*room)->edge = NULL;
