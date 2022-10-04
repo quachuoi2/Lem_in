@@ -6,19 +6,20 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 07:28:26 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/04 11:42:06 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//MOVE THIS FILE TO INCLUDES
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
 # include "libftprintf.h"
 # include "get_next_line.h"
 # include <stdio.h> // delet nao
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#include <sys/types.h> // delet nao
+#include <sys/stat.h> // delet nao
+#include <fcntl.h>// delet nao
 
 # define START_ROOM -1
 # define END_ROOM 1
@@ -28,6 +29,8 @@
 # define BACKWARD -1
 # define UNUSED_FORWARD 0
 # define MAGIC_NUMBER 30000
+# define STRING_AMOUNT 100000
+# define HASH_SIZE 100000
 
 typedef struct s_room t_room;
 typedef struct s_rlist t_rlist;
@@ -40,7 +43,9 @@ typedef struct s_tracer t_tracer;
 extern int		CROSSED;
 extern int		best_p_count;
 extern int		best_line_count;
+extern int		g_ant;
 extern t_path	*best_paths[MAGIC_NUMBER];
+extern t_rlist	*hash_table;
 
 struct s_room
 {
@@ -95,18 +100,29 @@ int		instant_finish(int max_ant, t_rlist *list);
 void	path_quicksort(t_path **path, int low, int high);
 
 //get.c
-void	get_data(int *ants_num, int fd, t_rlist **list);
-void	get_rooms(t_rlist **list, int fd);
-void	get_links(t_rlist *list, char *line, int fd);
+void	read_map(t_rlist **list, t_room  **start, int fd);
+
+//get_utils.c
+int		get_command(char *str);
+void	double_str_size(char **str, int size);
+int		insurance_reading(char **str, int ret, int fd);
 
 //assign.c
-void	assign_room(t_room **room, char *line);
+void	assign_room(t_room **room, char *line, int room_state);
 void	assign_start_end_room(t_room **room, char **line, int fd);
 void	assign_edge(t_room *a, t_room *b);
 
 //error.c
 void	check_start_end_room(t_rlist *list, t_room **start);
-void	check_ants(char *line);
+void	check_ants_char(char c);
+void	check_ant_amount();
+void	check_valid_room(t_room *r1, t_room *r2);
+void	check_invalid_room_input(char **split);
+void	check_duplicate_room(int hash_result);
+
+//hash.c
+unsigned int hash(char *key);
+int	hash_room(t_room *room);
 
 //utilities.c
 void	add_room_list(t_room *room, t_rlist **list);
@@ -136,5 +152,4 @@ void	free_everything(t_rlist *list);
 
 //traveler.c
 void	exotic_ant_travelers(int max_ant);
-
 #endif

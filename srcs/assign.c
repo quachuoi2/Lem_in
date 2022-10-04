@@ -6,27 +6,29 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 06:56:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/04 11:34:09 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	assign_room(t_room **room, char *line)
+void	assign_room(t_room **room, char *line, int room_state)
 {
 	char	**split;
 
 	*room = (t_room *)malloc(sizeof(t_room));
 	split = ft_strsplit(line, ' ');
+	check_invalid_room_input(split);
 	(*room)->name = ft_strdup(split[0]);
 	(*room)->coord_x = ft_atoi(split[1]);
 	(*room)->coord_y = ft_atoi(split[2]);
-	(*room)->state = NORMAL_ROOM;
+	(*room)->state = room_state;
 	(*room)->step_count = 0;
 	(*room)->ant = 0;
 	(*room)->prev = NULL;
 	(*room)->next = NULL;
 	(*room)->edge = NULL;
+	check_duplicate_room(hash_room(*room));
 	ft_arrdel(&split);
 }
 
@@ -40,7 +42,7 @@ void	assign_start_end_room(t_room **room, char **line, int fd)
 		start_end_state = END_ROOM;
 	free(*line);
 	get_next_line(fd, line);
-	assign_room(room, *line);
+	assign_room(room, *line, start_end_state);
 	(*room)->state = start_end_state;
 }
 

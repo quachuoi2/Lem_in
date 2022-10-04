@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:29:54 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/08/30 22:39:52 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/04 11:34:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,59 @@ void	check_start_end_room(t_rlist *list, t_room **start)
 	}
 	if (!end || !*start)
 	{
-		printf("where room\n");
+		printf("Bad Start/End room\n");
 		exit(0);
 	}
 }
 
-void	check_ants(char *line)
+void	check_ants_char(char c)
 {
-	while (*line)
+	if (!ft_isdigit(c))
 	{
-		if (!ft_isdigit(*line))
+		printf("???\n");
+		exit(0);
+	}
+}
+
+void	check_ant_amount()
+{
+	if (g_ant < 1)
+	{
+		ft_printf("Bad ant amount\n");
+		exit (0);
+	}
+}
+
+void	check_valid_room(t_room *r1, t_room *r2)
+{
+	if (!r1 || !r2)
+	{
+		ft_printf("Bollocks link\n");
+		exit (0);
+	}
+}
+
+void	check_invalid_room_input(char **split)
+{
+	int i = 0;
+	while (split[i])
+	{
+		if (i > 2)
 		{
-			printf("???\n");
-			exit(0);
+			ft_printf("Invalid room input\n");
+			ft_arrdel(&split);
+			exit (0);
 		}
-		line++;
+		i++;
+	}
+}
+
+void	check_duplicate_room(int hash_result)
+{
+	if (hash_result == 0)
+	{
+		ft_printf("Duplicate rooms found\n");
+		// free_stuff();
+		exit(0);
 	}
 }

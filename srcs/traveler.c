@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 07:28:05 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 07:46:12 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/04 00:54:18 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	exotic_ant_travelers(int max_ant)
 	int		cur_ant;
 	t_room **room;
 
-	printf("\n");
 	cur_ant = 1;
 	while (best_paths[0]->huone[best_paths[0]->steps - 1]->ant < max_ant) // while endroom's ant is less than the total ants (ants havent fully moved to endroom)
 	{
