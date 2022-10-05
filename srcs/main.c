@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/04 11:41:13 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:48:46 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,21 @@ int	main()
 	t_room	*start;
 	t_edge	start_edge;
 
-	// fd = 0;
+	// fd = open("testmap/oneline", O_RDONLY);
 	// fd = open("testmap/valid/big_sup/map_big_sup_9", O_RDONLY);
-	fd = open("testmap/oneline", O_RDONLY);
+	fd = 0;
 	hash_table = ft_memalloc(sizeof(t_rlist) * HASH_SIZE);
 	initialize_var(&list);
 	read_map(&list, &start, fd);
 	set_edge(&start_edge, start, start, 0);
 	while(bfs(&start_edge))
 	{
-		lemme_in(start, g_ant);
+		lemme_in(start);
 		if (insta == 0)
-			insta = instant_finish(g_ant, list);
+			insta = instant_finish(list);
 	}
 	start->ant = g_ant;
-	exotic_ant_travelers(g_ant);
+	exotic_ant_travelers();
 	// printf("line count: %d\n", best_line_count);
 	free_everything(list);
 	return (0);

@@ -6,13 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 05:22:28 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 10:50:58 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	print_conclude(t_edge *rev_edge, int revq_idx, int time)
+void	print_conclude(t_edge *rev_edge, int revq_idx)
 {
 	int i = revq_idx;
 	printf("conclude: ");
@@ -29,49 +29,49 @@ void	print_conclude(t_edge *rev_edge, int revq_idx, int time)
 	printf("\n");
 }
 
-static int conclude_path(t_edge **queue, t_tracer *tracer, int q_idx)
+void	check_backward_usage(int *current_status, int flow)
 {
-	t_edge	rev_edge[q_idx];
-	int		revq_idx;
-	int		tar;
-	int		backward_edge_used;
-	t_room	*old_long_path_room = 0;
-	static int	time;
+	if (flow == BACKWARD)
+		*current_status = BACKWARD;
+}
 
-	time++;
-	revq_idx = 0;
-	backward_edge_used = 0;
-	set_edge(&rev_edge[revq_idx++], queue[q_idx]->to, queue[q_idx]->from, queue[q_idx]->flow);
-	tar = tracer[q_idx].idx;
-	while (q_idx > 0)
-	{
-		// printf("%d <- %d\n", q_idx, tracer[q_idx].idx);
-		if (q_idx == tar)
-		{
-			if (queue[q_idx]->to->prev == queue[q_idx]->from) // if there is a backward edge that matches this rev_edge ->fail
-			{
-				if (queue[q_idx]->to->step_count <= tracer[q_idx].step_count)
-					return (0);
-				old_long_path_room = queue[q_idx]->from;
-			}
-			set_edge(&rev_edge[revq_idx], queue[q_idx]->to, queue[q_idx]->from, queue[q_idx]->flow);
-			if (rev_edge[revq_idx++].flow == BACKWARD)
-				backward_edge_used = BACKWARD;
-			tar = tracer[q_idx].idx;
-		}
-		q_idx--;
-	}
-	// print_conclude(rev_edge, revq_idx, time);
-	if (old_long_path_room != 0)
-		remove_old_longer_path(old_long_path_room); //and reconnect new room instead of pure_forward_augment
-	if (backward_edge_used == BACKWARD)
-	{
-		mixed_augment(rev_edge, revq_idx - 1);
-		return (-1);
-	}
-	else
-		pure_forward_augment(rev_edge, revq_idx - 1);
+int		check_lesser_step_path(int old_amount, int new_amount, t_room **old_long_room, t_room *current_room)
+{
+	if (new_amount > old_amount)
+		return (0);
+	*old_long_room = current_room;
 	return (1);
+}
+
+static int conclude_path(t_edge **que, t_tracer *tracer, int q_i)
+{
+	t_edge	rev_edge[q_i];
+	int		rev_i;
+	int		target_idx;
+	int		backward_edge_used;
+	t_room	*old_long_room;
+
+	rev_i = 0;
+	old_long_room = 0;
+	backward_edge_used = 0;
+	set_edge(&rev_edge[rev_i++], que[q_i]->to, que[q_i]->from, que[q_i]->flow);
+	target_idx = tracer[q_i].idx;
+	while (q_i > 0)
+	{
+		// printf("%d <- %d\n", q_i, tracer[q_i].idx);
+		if (q_i == target_idx)
+		{
+			if (que[q_i]->to->prev == que[q_i]->from && // if there is a backward edge that matches this rev_edge ->fail
+				check_lesser_step_path(que[q_i]->to->step_count, que[q_i]->to->step_count, &old_long_room, que[q_i]->from) == 0)
+					return (0);
+			set_edge(&rev_edge[rev_i], que[q_i]->to, que[q_i]->from, que[q_i]->flow);
+			check_backward_usage(&backward_edge_used, rev_edge[rev_i++].flow);
+			target_idx = tracer[q_i].idx;
+		}
+		q_i--;
+	}
+	// print_conclude(rev_edge, rev_i);
+	return (augment(rev_edge, rev_i, old_long_room, backward_edge_used));
 }
 
 int bfs(t_edge *start)

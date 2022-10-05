@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 05:42:17 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:00:04 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,17 @@ void	print_path_ant_count(t_path **path, int p_count)
 	printf("%d\n", path[i]->ant_count);
 }
 
-static int	count_lines(t_path **path, int max_ant, int p_count)
+static int	count_lines(t_path **path, int p_count)
 {
 	int	path_idx;
 	int	line;
 	int	step;
+	int max_ant;
 
 	path_idx = 0;
 	step = 0;
 	line = path[0]->steps;
+	max_ant = g_ant;
 	while (max_ant > 0)
 	{
 		if (step > path_idx)
@@ -109,7 +111,7 @@ static int set_paths(t_room *start, t_path **path)
 	return (p_count);
 }
 
-int	lemme_in(t_room *start, int ant)
+int	lemme_in(t_room *start)
 {
 	int				p_count;
 	int				line_count;
@@ -117,7 +119,7 @@ int	lemme_in(t_room *start, int ant)
 
 	p_count = set_paths(start, paths);
 	path_quicksort(paths, 0, p_count - 1);
-	line_count = count_lines(paths, ant, p_count);
+	line_count = count_lines(paths, p_count);
 	if (line_count < best_line_count || best_line_count == 0)
 	{
 		// printf("%d < %d\n", line_count, best_line_count);

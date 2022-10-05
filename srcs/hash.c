@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 09:08:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/04 11:42:22 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:49:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,27 @@ int	hash_room(t_room *room)
 	if (hash_table[idx].room == NULL)
 		return (set_hash(&hash_table[idx], room));
 	temp = &hash_table[idx];
-	while (temp != NULL)
+	new_collision = hash_table[idx].next;
+	while (new_collision != NULL)
 	{
-		if (ft_strcmp(temp->room->name, room->name) == 0)
-			return (0);
-		new_collision = temp;
-		temp = temp->next;
+		if (ft_strcmp(new_collision->room->name, room->name) == 0)
+			return (0); //room exist
+		temp = new_collision;
+		new_collision = new_collision->next;
 	}
 	new_collision = ft_memalloc(sizeof(t_rlist));
+	temp->next = new_collision;
 	return (set_hash(new_collision, room));
+}
+
+t_room	*retrieve_room(char *key)
+{
+	int		idx;
+	t_rlist	*temp;
+
+	idx = hash(key);
+	temp = &hash_table[idx];
+	while (ft_strcmp(temp->room->name, key) != 0)
+		temp = temp->next;
+	return (temp->room);
 }

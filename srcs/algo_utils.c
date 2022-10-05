@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 04:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 05:44:13 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:00:47 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	count_step(t_room *room)
 	return (i);
 }
 
-int	instant_finish(int max_ant, t_rlist *list)
+int	instant_finish(t_rlist *list)
 {
 	int	i;
 	int	j;
@@ -36,7 +36,7 @@ int	instant_finish(int max_ant, t_rlist *list)
 		if (best_paths[i]->huone[0]->state == END_ROOM)
 		{
 			j = 0;
-			while (j <= max_ant)
+			while (j <= g_ant)
 				printf("L%d-%s ", j++, best_paths[i]->huone[0]->name);
 			printf("\n");
 			free_everything(list);

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 08:17:37 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/04 10:01:44 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:53:33 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,8 @@ static void	get_links(t_rlist *list, char *line, int fd)
 	if (line[0] != '#')
 	{
 		split = ft_strsplit(line, '-');
-		r1 = NULL;
-		r2 = NULL;
-		while (list && (!r1 || !r2))
-		{
-			if (!ft_strcmp(split[0], list->room->name)) //maybe hashing would increase the speed a bit
-				r1 = list->room;
-			else if (!ft_strcmp(split[1], list->room->name))
-				r2 = list->room;
-			list = list->next;
-		}
+		r1 = retrieve_room(split[0]);
+		r2 = retrieve_room(split[1]);
 		check_valid_room(r1, r2);
 		assign_edge(r1, r2);
 	}
@@ -89,11 +81,7 @@ static void	process_map(t_rlist **list, char *str, int ret, int fd)
 	{
 		i = 0;
 		while (str[l_end] != '\n' && l_end < ret)
-		{
-			smol_line[i] = str[l_end];
-			i++;
-			l_end++;
-		}
+			smol_line[i++] = str[l_end++];
 		smol_line[i] = 0;
 		process_line(list, smol_line, fd);
 		l_end++;
@@ -113,6 +101,6 @@ void	read_map(t_rlist **list, t_room **start, int fd)
 	process_map(list, str, total, fd);
 	check_start_end_room(*list, start);
 	str[total] = '\n';
-	write (1, str, total + 1);
+	// write (1, str, total + 1);
 	free(str);
 }

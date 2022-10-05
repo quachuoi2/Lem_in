@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:07:30 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/02 12:25:45 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 10:41:04 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,18 @@ void	pure_forward_augment(t_edge *rev_edge, int rev_idx)
 		rev_idx--;
 	}
 	// printf("%s\n", rev_edge[rev_idx + 1].from->name);
+}
+
+int	augment(t_edge *rev_edge, int rev_i, t_room *old_long_room, int backward)
+{
+	if (old_long_room != 0)
+		remove_old_longer_path(old_long_room); //and reconnect new room instead of pure_forward_augment
+	if (backward == BACKWARD)
+	{
+		mixed_augment(rev_edge, rev_i - 1);
+		return (-1);
+	}
+	else
+		pure_forward_augment(rev_edge, rev_i - 1);
+	return (1);
 }

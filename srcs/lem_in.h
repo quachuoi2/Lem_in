@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/04 11:42:06 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 10:51:33 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ struct s_path
 };
 
 //algo.c
-int		lemme_in(t_room *start, int ant);
+int		lemme_in(t_room *start);
 
 //algo_utils.c
 int		count_step(t_room *room);
-int		instant_finish(int max_ant, t_rlist *list);
+int		instant_finish(t_rlist *list);
 
 //quicksort.c
 void	path_quicksort(t_path **path, int low, int high);
@@ -121,8 +121,9 @@ void	check_invalid_room_input(char **split);
 void	check_duplicate_room(int hash_result);
 
 //hash.c
-unsigned int hash(char *key);
-int	hash_room(t_room *room);
+int				hash_room(t_room *room);
+unsigned int	hash(char *key);
+t_room			*retrieve_room(char *key);
 
 //utilities.c
 void	add_room_list(t_room *room, t_rlist **list);
@@ -139,6 +140,7 @@ int		search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer);
 //augment.c
 void	mixed_augment(t_edge *rev_edge, int rev_count);
 void	pure_forward_augment(t_edge *rev_edge, int rev_count);
+int		augment(t_edge *rev_edge, int rev_i, t_room *old_long_room, int backward);
 
 //edmond_karp_utils.c
 void	set_flow(t_edge *list, t_room *target_room, int flow);
@@ -151,5 +153,5 @@ void	free_path(t_path **paths, int p_count);
 void	free_everything(t_rlist *list);
 
 //traveler.c
-void	exotic_ant_travelers(int max_ant);
+void	exotic_ant_travelers();
 #endif

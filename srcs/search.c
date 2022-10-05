@@ -6,11 +6,35 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 15:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/30 03:40:46 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:36:03 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+//not occupied
+int	not_occupied(t_room *prev_room)
+{
+	return (prev_room == NULL);
+}
+
+// occupied - BACKWARD flow
+int	occ_backward(int flow)
+{
+	return (flow == BACKWARD);
+}
+
+// occupiedd - UNUSED_FORWARD flow - BACKWARD flow next
+int	occ_unused_to_backward(int current_flow, int next_flow)
+{
+	return (current_flow == UNUSED_FORWARD && next_flow == BACKWARD);
+}
+
+// occupied - USUNUSED_FORWARD flow - USED_FORWARD flow next - less steps taken
+int	steps(int next_flow, int old_step_count, int current_step_count)
+{
+	return (next_flow == USED_FORWARD && old_step_count > current_step_count);
+}
 
 int	search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 {
@@ -21,14 +45,14 @@ int	search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 	forw_edge = queue[idx]->to->edge;
 	while (forw_edge)
 	{
-		if (forw_edge->to != queue[idx]->from) //dont search the link you just came from
+		if (forw_edge->to != queue[idx]->from)
 		{
-			if (forw_edge->to == queue[idx]->to->prev) // to know if im looking at a forw edge similar to the backward room
+			if (forw_edge->to == queue[idx]->to->prev)
 				forw_edge->flow = BACKWARD;
-			if (queue[idx]->to->prev == NULL //not occupied
-					|| (queue[idx]->flow == BACKWARD // occupied - using BACKWARD flow
-					|| (queue[idx]->flow == UNUSED_FORWARD && forw_edge->flow == BACKWARD) // occupeid - using UNUSED_FORWARD flow - going to use BACKWARD flow next
-					|| (forw_edge->flow == USED_FORWARD && queue[idx]->to->step_count > tracer[idx].step_count))) // occupied - using USUNUSED_FORWARD flow - going to use USED_FORWARD flow next - steps taken is shorter than augmented steps
+			if (not_occupied(queue[idx]->to->prev)
+				|| occ_backward(queue[idx]->flow)
+				|| occ_unused_to_backward(queue[idx]->flow, forw_edge->flow)
+				|| steps(forw_edge->flow, queue[idx]->to->step_count, tracer[idx].step_count))
 			{
 				tracer[*q_count].idx = idx;
 				tracer[*q_count].step_count = tracer[idx].step_count + 1;
@@ -40,25 +64,3 @@ int	search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 	}
 	return (room_count);
 }
-
-//condition
-// current room is NOT occupied aka doesnt have a backward edge (aka room->prev == 0)
-// current room is occupied BUT the flow that lead to current room is a BACKWARD flow
-// current room is occupied AND the flow that lead to current room is an UNUSED_FORWARD flow, BUT the flow to the next room is a BACKWARD
-// current room is occupied AND the flow that lead to current room is an UNUSED_FORWARD flow AND the flow to the next room is a USED_FORWARD, but the steps it takes to the current room on this path is less than the augmented path
-
-//SewDough Code
-//	room = queue.to
-//	if (room is NOT occupied)
-//		Good to go
-//	else if (room is occupied)
-//	{
-// 		if flow from queue.from -> queue.to == BACKWARD
-// 			then queue.to -> forward can be UNUSED FORWARD or BACKWARD
-// 		else if flow from queue.from -> queue.to == UNUSED FORWARD
-//		{
-// 			then queue.to -> forward must be BACKWARD
-//			else if queue.to -> forward is USED_FORWARD
-//				then room's step_count (augmented) > current path's step count
-//		}
-//	}

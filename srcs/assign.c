@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/04 11:34:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:16:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	assign_edge(t_room *a, t_room *b)
 	t_edge	*temp;
 
 	temp = a->edge;
-	while (temp) //check for existing duplicate room //skipping this saves a lot of time
+	while (temp) //check for linking a room multiple times
 	{
-		if (!ft_strcmp(a->edge->to->name, b->name))
+		if (ft_strcmp(a->edge->to->name, b->name) == 0)
 			return;
 		temp = temp->next;
 	}
