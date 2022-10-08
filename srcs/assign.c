@@ -6,57 +6,71 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/05 09:16:28 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 12:46:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	assign_room(t_room **room, char *line, int room_state)
+static void	assign_start_end_room(t_room *room, int room_state)
 {
-	char	**split;
+	check_duplicate_start_end(room, room_state);
+	if (room_state == START_ROOM)
+		g_source = room;
+	else if (room_state == END_ROOM)
+		g_sink = room;
+}
 
-	*room = (t_room *)malloc(sizeof(t_room));
+int	assign_ants(char *line)
+{
+	int	i;
+
+	if (g_ant != 0)
+		return (0);
+	i = 0;
+	while (line[i] != 0)
+		check_ants_char(line[i++]);
+	g_ant = ft_atoi(line);
+	check_ant_amount();
+	return (1);
+}
+
+void	assign_room(char *line, int room_state)
+{
+	int		hash_result;
+	char	**split;
+	t_room	*room;
+
+	room = (t_room *)malloc(sizeof(t_room));
+	assign_start_end_room(room, room_state);
+	room->steps = 0;
+	room->ant = 0;
+	room->prev = NULL;
+	room->next = NULL;
+	room->edge = NULL;
 	split = ft_strsplit(line, ' ');
-	check_invalid_room_input(split);
-	(*room)->name = ft_strdup(split[0]);
-	(*room)->coord_x = ft_atoi(split[1]);
-	(*room)->coord_y = ft_atoi(split[2]);
-	(*room)->state = room_state;
-	(*room)->step_count = 0;
-	(*room)->ant = 0;
-	(*room)->prev = NULL;
-	(*room)->next = NULL;
-	(*room)->edge = NULL;
-	check_duplicate_room(hash_room(*room));
+	room->name = ft_strdup(split[0]);
+	hash_result = hash_room(room);
+	check_valid_room(split, room, line, hash_result);
+	room->coord_x = ft_atoi(split[1]);
+	room->coord_y = ft_atoi(split[2]);
 	ft_arrdel(&split);
 }
 
-void	assign_start_end_room(t_room **room, char **line, int fd)
+void	assign_edge(char *line, int fd)
 {
-	int	start_end_state;
+	char	**split;
+	t_room	*r1;
+	t_room	*r2;
 
-	if ((*line)[2] == 's')
-		start_end_state = START_ROOM;
-	else
-		start_end_state = END_ROOM;
-	free(*line);
-	get_next_line(fd, line);
-	assign_room(room, *line, start_end_state);
-	(*room)->state = start_end_state;
-}
-
-void	assign_edge(t_room *a, t_room *b)
-{
-	t_edge	*temp;
-
-	temp = a->edge;
-	while (temp) //check for linking a room multiple times
+	split = ft_strsplit(line, '-');
+	r1 = retrieve_room(split[0]);
+	r2 = retrieve_room(split[1]);
+	check_valid_link(r1, r2, split, line);
+	if (check_duplicate_link(r1, r2) == NOT_FOUND)
 	{
-		if (ft_strcmp(a->edge->to->name, b->name) == 0)
-			return;
-		temp = temp->next;
+		add_elist(r1, r2);
+		add_elist(r2, r1);
 	}
-	add_elist(a, b);
-	add_elist(b, a);
+	ft_arrdel(&split);
 }

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:04:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/03 04:41:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 10:45:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,55 @@ void	free_path(t_path **paths, int p_count)
 	}
 }
 
-void	free_everything(t_rlist *list)
+void	free_room_content(t_room *room)
 {
-	t_rlist	*temp;
-	t_edge	*e_temp;
+	t_edge	*edge;
 
-	while (list)
+	ft_memdel((void **)&room->name);
+	while (room->edge)
 	{
-		temp = list->next;
-		ft_memdel((void **)&list->room->name);
-		while (list->room->edge)
-		{
-			e_temp = list->room->edge->next;
-			ft_memdel((void **)&list->room->edge);
-			list->room->edge = e_temp;
-		}
-		ft_memdel((void **)&list->room);
-		ft_memdel((void **)&list);
-		list = temp;
+		edge = room->edge->next;
+		ft_memdel((void **)&room->edge);
+		room->edge = edge;
 	}
-	free_path(best_paths, best_p_count);
+	free(room);
+}
+
+static void	free_hash_rooms(t_rlist *hash_slot)
+{
+	int		collision_count;
+	t_rlist	*temp;
+
+	collision_count = 0;
+	while (hash_slot)
+	{
+		temp = hash_slot->next;
+		free_room_content(hash_slot->room);
+		hash_slot->room = NULL;
+		if (collision_count > 0)
+			ft_memdel((void **)&hash_slot);
+		hash_slot = temp;
+		collision_count++;
+	}
+}
+
+static void	free_all_rooms(void)
+{
+	int	i;
+
+	i = 0;
+	while (i < HASH_SIZE)
+	{
+		if (g_hash_table[i].room)
+			free_hash_rooms(&g_hash_table[i]);
+		i++;
+	}
+}
+
+void	free_everything(void)
+{
+	free_all_rooms();
+	if (g_map)
+		ft_memdel((void **)&g_map);
+	free_path(g_best_paths, g_best_path_count);
 }

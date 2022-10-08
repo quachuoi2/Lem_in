@@ -6,37 +6,37 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 15:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/05 09:36:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 12:50:29 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 //not occupied
-int	not_occupied(t_room *prev_room)
+static int	not_occupied(t_room *prev_room)
 {
 	return (prev_room == NULL);
 }
 
 // occupied - BACKWARD flow
-int	occ_backward(int flow)
+static int	occ_backward(int current_flow)
 {
-	return (flow == BACKWARD);
+	return (current_flow == BACKWARD);
 }
 
 // occupiedd - UNUSED_FORWARD flow - BACKWARD flow next
-int	occ_unused_to_backward(int current_flow, int next_flow)
+static int	occ_unused_to_backward(int current_flow, int next_flow)
 {
 	return (current_flow == UNUSED_FORWARD && next_flow == BACKWARD);
 }
 
 // occupied - USUNUSED_FORWARD flow - USED_FORWARD flow next - less steps taken
-int	steps(int next_flow, int old_step_count, int current_step_count)
+static int	shorter_path(int next_flow, int old_steps, int current_steps)
 {
-	return (next_flow == USED_FORWARD && old_step_count > current_step_count);
+	return (next_flow == USED_FORWARD && old_steps > current_steps);
 }
 
-int	search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
+int	search(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 {
 	int		room_count;
 	t_edge	*forw_edge;
@@ -52,10 +52,10 @@ int	search_forward(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 			if (not_occupied(queue[idx]->to->prev)
 				|| occ_backward(queue[idx]->flow)
 				|| occ_unused_to_backward(queue[idx]->flow, forw_edge->flow)
-				|| steps(forw_edge->flow, queue[idx]->to->step_count, tracer[idx].step_count))
+				|| shorter_path(forw_edge->flow,
+					queue[idx]->to->steps, tracer[idx].steps))
 			{
-				tracer[*q_count].idx = idx;
-				tracer[*q_count].step_count = tracer[idx].step_count + 1;
+				set_tracer(&tracer[*q_count], idx, tracer[idx].steps + 1);
 				queue[(*q_count)++] = forw_edge;
 				room_count++;
 			}

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/21 07:38:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/06 09:22:50 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft.h"
-# include <stdio.h>
+# include <stdio.h> //delete
 
 typedef struct s_order
 {
@@ -59,12 +59,13 @@ void	initialize_order(int fd);
 void	int_converter(unsigned long long int *u, long long *n);
 void	bundling_bundler(int *length, int (*f)(void));
 int		check_value(unsigned long long u, long long int *n);
+void	check_f_value(long double *f);
 
 //utilities_2.c
 void	put_flag(int ammount, char c, int fd);
 void	a_wild_mfw_appeared(va_list ap, char m_p);
 void	mfw_prec_assigner(char **fmt, va_list ap);
-void	extra_functionality(char **fmt, char default_color[5], int *fd,
+void	extra_functionality(char **fmt, char default_color[6], int *fd,
 			va_list ap);
 
 //printer.c
@@ -77,7 +78,7 @@ int		put_pbouxx(va_list ap);
 //flags_handler.c
 int		hash_pos_spc(void);
 int		cal_zero(int length);
-int		cal_padding(int length);
+void	cal_padding(int length);
 int		mfw(int length, int (*f)(void));
 
 //conversion_prefix_adapter.c

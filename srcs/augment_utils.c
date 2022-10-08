@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:44:32 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/02 12:25:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 09:42:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	set_flow(t_edge *list, t_room *target_room, int flow)
 {
-	while (list && list->to != target_room) //loop to forward links to find the room to remove flow
+	while (list && list->to != target_room)
 		list = list->next;
 	list->flow = flow;
 }
@@ -36,7 +36,7 @@ void	remove_old_longer_path(t_room *room)
 	t_room	*temp;
 	t_room	*final;
 
-	while (room->state != START_ROOM)
+	while (room != g_source)
 	{
 		final = temp;
 		temp = room->prev;

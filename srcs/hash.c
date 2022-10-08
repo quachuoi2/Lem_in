@@ -6,29 +6,27 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 09:08:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/05 09:49:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 12:48:21 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int	set_hash(t_rlist *slot, t_room *room)
+static int	set_new_hash_slot(t_rlist *slot, t_room *room)
 {
 	slot->room = room;
 	slot->next = NULL;
-	return (1);
+	return (NEW_ROOM);
 }
 
-unsigned int hash(char *key)
+int	hash_value(char *key)
 {
 	int	value;
-	int key_length;
 	int	i;
 
-	key_length = ft_strlen(key);
 	i = 0;
 	value = 0;
-	while (i < key_length)
+	while (key[i])
 	{
 		value = value * 42 + key[i];
 		i++;
@@ -37,37 +35,47 @@ unsigned int hash(char *key)
 	return (value);
 }
 
+int	check_exisiting_hash_slot(t_rlist **last_slot, char *room_name)
+{
+	t_rlist	*new_collision;
+
+	new_collision = *last_slot;
+	while (new_collision != NULL)
+	{
+		if (ft_strcmp(new_collision->room->name, room_name) == 0)
+			return (ROOM_EXIST);
+		*last_slot = new_collision;
+		new_collision = new_collision->next;
+	}
+	return (NEW_ROOM);
+}
+
 int	hash_room(t_room *room)
 {
 	int		idx;
-	t_rlist	*new_collision;
-	t_rlist	*temp;
+	t_rlist	*last_slot;
 
-	idx = hash(room->name);
-	if (hash_table[idx].room == NULL)
-		return (set_hash(&hash_table[idx], room));
-	temp = &hash_table[idx];
-	new_collision = hash_table[idx].next;
-	while (new_collision != NULL)
-	{
-		if (ft_strcmp(new_collision->room->name, room->name) == 0)
-			return (0); //room exist
-		temp = new_collision;
-		new_collision = new_collision->next;
-	}
-	new_collision = ft_memalloc(sizeof(t_rlist));
-	temp->next = new_collision;
-	return (set_hash(new_collision, room));
+	idx = hash_value(room->name);
+	if (g_hash_table[idx].room == NULL)
+		return (set_new_hash_slot(&g_hash_table[idx], room));
+	last_slot = &g_hash_table[idx];
+	if (check_exisiting_hash_slot(&last_slot, room->name) == ROOM_EXIST)
+		return (ROOM_EXIST);
+	last_slot->next = ft_memalloc(sizeof(t_rlist));
+	return (set_new_hash_slot(last_slot->next, room));
 }
 
 t_room	*retrieve_room(char *key)
 {
-	int		idx;
 	t_rlist	*temp;
 
-	idx = hash(key);
-	temp = &hash_table[idx];
-	while (ft_strcmp(temp->room->name, key) != 0)
-		temp = temp->next;
-	return (temp->room);
+	if (key)
+	{
+		temp = &g_hash_table[hash_value(key)];
+		while (temp->room && ft_strcmp(temp->room->name, key) != 0)
+			temp = temp->next;
+		if (temp)
+			return (temp->room);
+	}
+	return (NULL);
 }

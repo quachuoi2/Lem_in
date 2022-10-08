@@ -28,9 +28,9 @@ typedef struct s_list
 
 typedef struct s_index
 {
-	int	i;
-	int	j;
-	int	k;
+	int	str_idx;
+	int	buf_idx;
+	int	arr_idx;
 }				t_index;
 
 int			ft_abs(int n);

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:16:56 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/09/26 23:40:16 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/08 10:41:02 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static int	partition(t_path **path, int low, int high)
 	int	pivot;
 	int	index;
 
-	pivot = path[high]->steps;
+	pivot = path[high]->total_steps;
 	index = low;
 	while (low < high)
 	{
-		if (path[low]->steps < pivot)
+		if (path[low]->total_steps < pivot)
 		{
 			if (low != index)
 				path_swap(&path[low], &path[index]);

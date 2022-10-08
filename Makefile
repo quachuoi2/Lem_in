@@ -6,36 +6,44 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/04 09:08:12 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/08 12:42:56 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = a.out
 #change name
 #change name
-FILE = main error get utilities free bfs algo search augment_utils augment \
-		assign quicksort algo_utils traveler get_utils hash
-SRCS = srcs/
-O_DIR = objs/
+SRCS = main process_map process_map_utils utilities free bfs algo search \
+		augment_utils augment assign quicksort algo_utils traveler hash init\
+		error error_rooms error_start_end error_links
+
+SRCS_DIR = srcs/
+OBJS_DIR = objs/lem_in/
+OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS)))
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes/
-LIB = -L ./lib -lftprintf
+FT_PRINTF = libraries/libftprintf.a
+FT_PRINTF_DIR = ft_printf/
 OPTIMIZATION = -Ofast
 
 all: $(NAME)
 
-$(NAME): $(addprefix $(O_DIR), $(addsuffix .o, $(FILE)))
-	gcc $^ $(LIB) $(INCLUDES) #-o $(NAME)
+$(NAME): $(OBJS)
+	gcc $(OBJS) $(FT_PRINTF) $(INCLUDES) #-o $(NAME)
 
-$(O_DIR)%.o: $(SRCS)%.c $(SRCS)lem_in.h
-	@mkdir -p $(O_DIR)
-	gcc -c $< $(LIB) $(INCLUDES) -o $@ -g
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(SRCS_DIR)lem_in.h $(FT_PRINTF)
+	@mkdir -p $(OBJS_DIR)
+	gcc -c $(INCLUDES) $< -o $@ -g
+
+$(FT_PRINTF):
+	make -C $(FT_PRINTF_DIR)
 
 clean:
-	@rm -rf $(O_DIR)
-	@rm -f $(wildcard *.o)
+	@make clean -C $(FT_PRINTF_DIR)
+	@rm -f $(OBJS)
 
 fclean: clean
+	@make fclean -C $(FT_PRINTF_DIR)
 	@/bin/rm -f $(NAME)
 	@/bin/rm -f a.out
 
