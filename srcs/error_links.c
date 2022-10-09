@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:58:04 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:55:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:45:54 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,40 @@ static int	check_multiple_dashes(char *line)
 	return (OK);
 }
 
-void	check_valid_link(t_room *r1, t_room *r2, char **split, char *line)
+static int	check_empty_room(t_room *r1, t_room *r2)
 {
-	if (!r1 || !r2 || check_multiple_dashes(line) == FAIL)
+	if (!r1 || !r2)
 	{
 		ft_printf("ERROR: Invalid line found\n");
-		ft_arrdel(&split);
-		teminate_program();
+		return (FAIL);
 	}
+	return (OK);
 }
 
-int	check_duplicate_link(t_room *a, t_room *b)
+static int	check_duplicate_link(t_room *a, t_room *b)
 {
-	int		duplicate;
 	t_edge	*temp;
 
-	duplicate = NOT_FOUND;
 	temp = a->edge;
 	while (temp)
 	{
 		if (ft_strcmp(temp->to->name, b->name) == 0)
-			duplicate = FOUND;
+		{
+			ft_printf("ERROR: Duplicate links found\n");
+			return (FAIL);
+		}
 		temp = temp->next;
 	}
-	return (duplicate);
+	return (OK);
+}
+
+void	check_valid_link(t_room *r1, t_room *r2, char **split, char *line)
+{
+	if (check_empty_room(r1, r2) == FAIL
+		|| check_multiple_dashes(line) == FAIL
+		|| check_duplicate_link(r1, r2) == FAIL)
+	{
+		ft_arrdel(&split);
+		teminate_program();
+	}
 }

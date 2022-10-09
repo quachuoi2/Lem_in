@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 07:04:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 13:18:11 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 14:52:59 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	read_command_comments(char *str, int *start_end)
 {
-	check_double_command(*start_end);
+	check_double_command_comment(*start_end);
 	if (!ft_strcmp(str, "##start"))
 		*start_end = START_ROOM;
 	else if (!ft_strcmp(str, "##end"))

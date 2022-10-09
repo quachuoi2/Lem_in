@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:55:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 11:40:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 14:52:47 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void	check_start_end_reachable(int path_found)
 	}
 }
 
-void	check_double_command(int start_end)
+void	check_double_command_comment(int start_end)
 {
 	if (start_end != NORMAL_ROOM)
 	{
-		ft_printf("ERROR: Double command found\n");
+		ft_printf("ERROR: Error on command input found\n");
 		teminate_program();
 	}
 }

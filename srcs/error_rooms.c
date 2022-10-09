@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:53:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:56:33 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:11:22 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ static int	check_multiple_spaces(char *line)
 
 void	check_valid_room(char **split, t_room *room, char *line, int hsh_result)
 {
-	if (check_room_input(split, room) != OK
-		|| check_room_coordinates(split, room) != OK
-		|| check_duplicate_room(hsh_result, split, room) != OK
-		|| check_multiple_spaces(line) != OK)
+	if (check_room_input(split, room) == FAIL
+		|| check_room_coordinates(split, room) == FAIL
+		|| check_duplicate_room(hsh_result, split, room) == FAIL
+		|| check_multiple_spaces(line) == FAIL)
 	{
 		ft_arrdel(&split);
 		teminate_program();

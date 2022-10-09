@@ -6,28 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:49:44 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 16:06:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/* void	print_conclude(t_edge *rev_edge, int revq_idx)
-{
-	int i = revq_idx;
-	printf("conclude: ");
-	while (revq_idx--)
-	{
-		printf("%5s - ", rev_edge[revq_idx].to->name);
-	}
-	printf("%5s\n", rev_edge[revq_idx + 1].from->name);
-	printf("%8s: ", "flow");
-	while (i--)
-	{
-		printf("%5d - ", rev_edge[i].flow);
-	}
-	printf("\n");
-} */
 
 static void	check_backward_usage(int *current_status, int flow)
 {
@@ -59,7 +42,6 @@ static int	conclude_path(t_edge **que, t_tracer *tracer, int q_i)
 	target_idx = tracer[q_i].idx;
 	while (q_i > 0)
 	{
-		// printf("%d <- %d\n", q_i, tracer[q_i].idx);
 		if (q_i == target_idx)
 		{
 			if (que[q_i]->to->prev == que[q_i]->from
@@ -72,7 +54,6 @@ static int	conclude_path(t_edge **que, t_tracer *tracer, int q_i)
 		}
 		q_i--;
 	}
-	// print_conclude(r_que, r_i);
 	return (augment(r_que, r_i, old_long_room, backward_edge_used));
 }
 
@@ -89,7 +70,6 @@ int	bfs(t_edge *start)
 	{
 		if (q.queue[q.idx]->crossed != g_crossed)
 		{
-			// printf("NV %d: %s -> %s = %d\n", q.idx, queue[q.idx]->from->name, queue[q.idx]->to->name, tracer[q.idx].steps);
 			if (q.queue[q.idx]->to != g_sink)
 				q.remaining += search(q.queue, &q.count, q.idx, tracer);
 			else
@@ -100,8 +80,6 @@ int	bfs(t_edge *start)
 			}
 			q.queue[q.idx]->crossed = g_crossed;
 		}
-		// else
-			// printf("AV %d: %s -> %s\n", q.idx, q.queue[q.idx]->from->name, q.queue[q.idx]->to->name);
 		q.idx++;
 	}
 	g_crossed++;

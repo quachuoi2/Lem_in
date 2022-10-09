@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 08:17:37 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 13:18:32 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:14:00 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	process_line(char *line, int fd, int *link_stage)
 			start_end = NORMAL_ROOM;
 		}
 	}
-	else if (line[1] == '#')
+	else
 		read_command_comments(line, &start_end);
 }
 
@@ -59,7 +59,7 @@ static void	process_map(int ret, int fd)
 	check_link_exist(link_stage);
 }
 
-void	read_map(int fd)
+int	read_map(int fd)
 {
 	int		ret;
 
@@ -68,6 +68,5 @@ void	read_map(int fd)
 	check_empty_file();
 	process_map(ret, fd);
 	g_map[ret] = '\n';
-	write (1, g_map, ret + 1);
-	ft_memdel((void **)&g_map);
+	return (ret + 1);
 }

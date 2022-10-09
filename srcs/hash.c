@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 09:08:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:48:21 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:47:05 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static int	set_new_hash_slot(t_rlist *slot, t_room *room)
 	return (NEW_ROOM);
 }
 
-int	hash_value(char *key)
+static unsigned int	hash_value(char *key)
 {
-	int	value;
-	int	i;
+	unsigned long long	value;
+	int					i;
 
 	i = 0;
 	value = 0;
@@ -32,7 +32,7 @@ int	hash_value(char *key)
 		i++;
 	}
 	value = value % HASH_SIZE;
-	return (value);
+	return ((unsigned int)value);
 }
 
 int	check_exisiting_hash_slot(t_rlist **last_slot, char *room_name)
@@ -52,8 +52,8 @@ int	check_exisiting_hash_slot(t_rlist **last_slot, char *room_name)
 
 int	hash_room(t_room *room)
 {
-	int		idx;
-	t_rlist	*last_slot;
+	unsigned int	idx;
+	t_rlist			*last_slot;
 
 	idx = hash_value(room->name);
 	if (g_hash_table[idx].room == NULL)

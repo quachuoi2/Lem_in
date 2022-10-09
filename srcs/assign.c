@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:46:16 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:12:37 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ void	assign_edge(char *line, int fd)
 	r1 = retrieve_room(split[0]);
 	r2 = retrieve_room(split[1]);
 	check_valid_link(r1, r2, split, line);
-	if (check_duplicate_link(r1, r2) == NOT_FOUND)
-	{
-		add_elist(r1, r2);
-		add_elist(r2, r1);
-	}
+	add_elist(r1, r2);
+	add_elist(r2, r1);
 	ft_arrdel(&split);
 }

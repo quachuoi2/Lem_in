@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 13:20:29 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 15:13:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		instant_finish(void);
 void	path_quicksort(t_path **path, int low, int high);
 
 //process_map.c
-void	read_map(int fd);
+int		read_map(int fd);
 
 //process_map_utils.c
 void	read_command_comments(char *str, int *start_end);
@@ -148,12 +148,11 @@ void	check_valid_room(char **split, t_room *room, char *line, int hsh_reslt);
 void	check_missing_start_end(void);
 void	check_duplicate_start_end(t_room *room, int room_state);
 void	check_start_end_reachable(int path_found);
-void	check_double_command(int start_end);
+void	check_double_command_comment(int start_end);
 
 //error_links.c
 void	check_link_exist(int link_stage);
 void	check_valid_link(t_room *r1, t_room *r2, char **split, char *line);
-int		check_duplicate_link(t_room *a, t_room *b);
 
 //hash.c
 int		hash_room(t_room *room);

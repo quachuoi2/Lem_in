@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 19:07:30 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:51:46 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/09 16:06:32 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ static void	mixed_augment(t_edge *rev_edge, int r_i)
 
 	i = r_i;
 	step_count = 1;
-	// printf("augment: ");
 	while (i > -1)
 	{
-		// printf("%s - ", rev_edge[i].to->name);
 		if (rev_edge[i].flow == BACKWARD)
 			delete_backward_edge(rev_edge, i);
 		else
@@ -45,7 +43,6 @@ static void	mixed_augment(t_edge *rev_edge, int r_i)
 		}
 		i--;
 	}
-	// printf("%s\n", rev_edge[i + 1].from->name);
 }
 
 static void	pure_forward_augment(t_edge *rev_edge, int r_i)
@@ -53,17 +50,14 @@ static void	pure_forward_augment(t_edge *rev_edge, int r_i)
 	int	step_count;
 
 	step_count = 1;
-	// printf("augment: ");
 	while (r_i > -1)
 	{
-		// printf("%s - ", rev_edge[r_i].to->name);
 		set_flow(rev_edge[r_i].to->edge, rev_edge[r_i].from, USED_FORWARD);
 		rev_edge[r_i].from->prev = rev_edge[r_i].to;
 		rev_edge[r_i].to->next = rev_edge[r_i].from;
 		rev_edge[r_i].from->steps = step_count++;
 		r_i--;
 	}
-	// printf("%s\n", rev_edge[r_i + 1].from->name);
 }
 
 int	augment(t_edge *rev_edge, int r_i, t_room *old_long_room, int backward)
