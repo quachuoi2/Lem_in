@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 07:04:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 14:52:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:21:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	read_command_comments(char *str, int *start_end)
 {
@@ -25,13 +25,14 @@ void	double_str_size(int size)
 {
 	char	*insurance_str;
 
-	insurance_str = ft_memalloc(sizeof(char) * (size * 2));
+	insurance_str = (char *)ft_memalloc(sizeof(char) * (size * 2));
+	check_malloc((void *) insurance_str);
 	ft_memcpy(insurance_str, g_map, size);
 	ft_memdel((void **)&g_map);
 	g_map = insurance_str;
 }
 
-void	insurance_reading(int *ret, int fd)
+void	insurance_reading(int *ret)
 {
 	int	total;
 
@@ -41,7 +42,7 @@ void	insurance_reading(int *ret, int fd)
 	while (*ret > 0)
 	{
 		double_str_size(total);
-		*ret = read(fd, &g_map[total], total);
+		*ret = read(0, &g_map[total], total);
 		total += *ret;
 	}
 	*ret = total;

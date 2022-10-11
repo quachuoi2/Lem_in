@@ -6,13 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 08:17:37 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:14:00 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:20:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
-static void	process_line(char *line, int fd, int *link_stage)
+static void	process_line(char *line, int *link_stage)
 {
 	static int	start_end;
 
@@ -23,7 +23,7 @@ static void	process_line(char *line, int fd, int *link_stage)
 			return ;
 		if (*link_stage == 1 || ft_strchr(line, '-'))
 		{
-			assign_edge(line, 0);
+			assign_edge(line);
 			*link_stage = 1;
 		}
 		else
@@ -36,7 +36,7 @@ static void	process_line(char *line, int fd, int *link_stage)
 		read_command_comments(line, &start_end);
 }
 
-static void	process_map(int ret, int fd)
+static void	process_map(int ret)
 {
 	int			link_stage;
 	t_line		line;
@@ -51,7 +51,7 @@ static void	process_map(int ret, int fd)
 		while (g_map[line.end] != '\n' && line.end < ret)
 			current_line[line.index++] = g_map[line.end++];
 		current_line[line.index] = 0;
-		process_line(current_line, fd, &link_stage);
+		process_line(current_line, &link_stage);
 		line.end++;
 		line.start = line.end;
 	}
@@ -59,14 +59,12 @@ static void	process_map(int ret, int fd)
 	check_link_exist(link_stage);
 }
 
-int	read_map(int fd)
+void	read_map(void)
 {
 	int		ret;
 
-	ret = read(fd, g_map, STRING_AMOUNT);
-	insurance_reading(&ret, fd);
+	ret = read(0, g_map, STRING_AMOUNT);
+	insurance_reading(&ret);
 	check_empty_file();
-	process_map(ret, fd);
-	g_map[ret] = '\n';
-	return (ret + 1);
+	process_map(ret);
 }

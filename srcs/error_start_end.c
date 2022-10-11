@@ -6,20 +6,20 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:55:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 14:52:47 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:03:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	check_missing_start_end(void)
 {
 	if (!g_source || !g_sink)
 	{
 		if (g_source == NOT_FOUND)
-			printf("ERROR: Start room missing\n");
+			ft_printf("ERROR: Start room missing\n");
 		if (g_sink == NOT_FOUND)
-			printf("ERROR: End room missing\n");
+			ft_printf("ERROR: End room missing\n");
 		teminate_program();
 	}
 }

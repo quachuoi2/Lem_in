@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 15:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:50:29 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:59:03 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 //not occupied
 static int	not_occupied(t_room *prev_room)

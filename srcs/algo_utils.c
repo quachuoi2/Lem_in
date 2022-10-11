@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 04:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 10:46:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:58:13 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 int	count_step(t_room *room)
 {
@@ -37,8 +37,8 @@ int	instant_finish(void)
 		{
 			j = 0;
 			while (j <= g_ant)
-				printf("L%d-%s ", j++, g_best_paths[i]->huone[0]->name);
-			printf("\n");
+				ft_printf("L%d-%s ", j++, g_best_paths[i]->huone[0]->name);
+			ft_printf("\n");
 			free_everything();
 			exit (0);
 		}

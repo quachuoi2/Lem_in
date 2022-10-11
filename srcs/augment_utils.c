@@ -6,17 +6,20 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:44:32 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 09:42:16 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:18:42 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	set_flow(t_edge *list, t_room *target_room, int flow)
 {
-	while (list && list->to != target_room)
-		list = list->next;
-	list->flow = flow;
+	if (target_room != NULL)
+	{
+		while (list && list->to != target_room)
+			list = list->next;
+		list->flow = flow;
+	}
 }
 
 void	delete_forward_room(t_room *room)
@@ -36,6 +39,8 @@ void	remove_old_longer_path(t_room *room)
 	t_room	*temp;
 	t_room	*final;
 
+	final = NULL;
+	temp = NULL;
 	while (room != g_source)
 	{
 		final = temp;

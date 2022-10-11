@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:04:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:46:58 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:58:43 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	free_path(t_path **paths, int p_count)
 {

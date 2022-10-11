@@ -6,14 +6,15 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/09 16:12:25 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/11 17:20:46 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = lem_in
+NAME = lem-in
 SRCS = main process_map process_map_utils utilities free bfs algo search \
 		augment_utils augment assign quicksort algo_utils traveler hash init\
-		error error_rooms error_start_end error_links
+		error error_rooms error_start_end error_links\
+		options
 
 SRCS_DIR = srcs/
 OBJS_DIR = objs/lem_in/
@@ -27,11 +28,11 @@ OPTIMIZATION = -Ofast
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(OBJS) $(FT_PRINTF) -I $(INCLUDES) -o $@ #-Ofast #remove Ofast for linux
+	gcc $(OBJS) $(FT_PRINTF) -I $(INCLUDES) $(FLAGS) -o $@ $(OPTIMIZATION)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES)lem_in.h $(FT_PRINTF)
 	@mkdir -p $(OBJS_DIR)
-	gcc -c -I $(INCLUDES) $< -o $@ -g #-Ofast #remove Ofast for linux
+	gcc -c $(FLAGS) -I $(INCLUDES) $< -o $@ -g $(OPTIMIZATION)
 
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)

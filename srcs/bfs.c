@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:07:39 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 16:06:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:58:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static void	check_backward_usage(int *current_status, int flow)
 {

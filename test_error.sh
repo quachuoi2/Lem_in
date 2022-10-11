@@ -9,7 +9,7 @@ fi
 for f in $1*
 do
 	printf "$f:\n" | rev | cut -d '/' -f 1 | rev >> "$RESULT_FILE"
-	valgrind --leak-check=full --show-leak-kinds=all --log-file=valout ./a.out < "$f" >> "$RESULT_FILE"
+	valgrind --leak-check=full --show-leak-kinds=all --log-file=valout ./lem-in < "$f" >> "$RESULT_FILE"
 	grep "in use" valout >> "$RESULT_FILE"
 	grep "ERROR SUMMARY" valout >> "$RESULT_FILE"
 	printf "\n" >> "$RESULT_FILE"

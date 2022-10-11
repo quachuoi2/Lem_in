@@ -6,17 +6,17 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:29:54 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 11:50:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:20:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	check_ants_char(char c)
 {
 	if (!ft_isdigit(c))
 	{
-		printf("ERROR: What kind of ant is this???\n");
+		ft_printf("ERROR: What kind of ant is this???\n");
 		teminate_program();
 	}
 }
@@ -44,6 +44,15 @@ void	check_empty_line(char *line)
 	if (line[0] == '\n' || line[0] == 0 || line[0] == 'L')
 	{
 		ft_printf("ERROR: Bad line\n");
+		teminate_program();
+	}
+}
+
+void	check_malloc(void *mem)
+{
+	if (mem == NULL)
+	{
+		ft_printf("ERROR: Out of memory\n");
 		teminate_program();
 	}
 }

@@ -6,17 +6,17 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 07:28:05 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 10:46:15 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:02:27 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static void	move_to_next(t_room *room, t_room *next)
 {
 	if (room->ant != 0)
 	{
-		printf("L%d-%s ", room->ant, next->name);
+		ft_printf("L%d-%s ", room->ant, next->name);
 		if (next != g_sink)
 			next->ant = room->ant;
 		else
@@ -30,7 +30,7 @@ static void	first_little_step(t_room *room, t_path *cur_path, int *cur_ant)
 	room->ant = *cur_ant;
 	(*cur_ant)++;
 	cur_path->ant_count--;
-	printf("L%d-%s ", room->ant, room->name);
+	ft_printf("L%d-%s ", room->ant, room->name);
 }
 
 void	exotic_ant_travelers(void)
@@ -54,6 +54,6 @@ void	exotic_ant_travelers(void)
 				first_little_step(room[0], g_best_paths[path_idx], &cur_ant);
 			path_idx++;
 		}
-		printf("\n");
+		ft_printf("\n");
 	}
 }

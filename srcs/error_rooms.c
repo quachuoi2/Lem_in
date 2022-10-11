@@ -6,13 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:53:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:11:22 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:03:20 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
-static int	check_room_input(char **split, t_room *room)
+static int	check_room_input(char **split)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ static int	check_room_input(char **split, t_room *room)
 	return (OK);
 }
 
-static int	check_room_coordinates(char **split, t_room *room)
+static int	check_room_coordinates(char **split)
 {
 	int	i;
 	int	room_status;
@@ -46,7 +46,7 @@ static int	check_room_coordinates(char **split, t_room *room)
 	return (room_status);
 }
 
-static int	check_duplicate_room(int hash_result, char **split, t_room *room)
+static int	check_duplicate_room(int hash_result, t_room *room)
 {
 	if (hash_result == ROOM_EXIST)
 	{
@@ -76,9 +76,9 @@ static int	check_multiple_spaces(char *line)
 
 void	check_valid_room(char **split, t_room *room, char *line, int hsh_result)
 {
-	if (check_room_input(split, room) == FAIL
-		|| check_room_coordinates(split, room) == FAIL
-		|| check_duplicate_room(hsh_result, split, room) == FAIL
+	if (check_room_input(split) == FAIL
+		|| check_room_coordinates(split) == FAIL
+		|| check_duplicate_room(hsh_result, room) == FAIL
 		|| check_multiple_spaces(line) == FAIL)
 	{
 		ft_arrdel(&split);

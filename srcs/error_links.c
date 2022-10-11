@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:58:04 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:45:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:58:30 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 void	check_link_exist(int link_stage)
 {

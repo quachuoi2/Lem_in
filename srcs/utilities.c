@@ -6,17 +6,18 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 02:07:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 12:48:59 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:20:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 t_edge	*add_elist(t_room *from_room, t_room *to_room)
 {
 	t_edge	*edge;
 
-	edge = ft_memalloc(sizeof(t_edge));
+	edge = (t_edge *)ft_memalloc(sizeof(t_edge));
+	check_malloc((void *)edge);
 	set_edge(edge, from_room, to_room, 0);
 	edge->next = from_room->edge;
 	from_room->edge = edge;

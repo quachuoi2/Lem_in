@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:16:56 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/08 10:41:02 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 15:58:59 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static void	path_swap(t_path **a, t_path **b)
 {

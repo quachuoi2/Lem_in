@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:49:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:20:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 int			g_crossed;
 int			g_ant;
@@ -22,18 +22,17 @@ t_room		*g_source;
 t_room		*g_sink;
 char		*g_map;
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	int		fd;
 	int		insta_finish;
 	int		path_found;
-	int		ret;
 	t_edge	start_edge;
+	t_flags	flags;
 
-	fd = 0;
-	init_global(&path_found);
+	init_global(&path_found, &flags);
+	check_options(argc, argv, &flags);
 	insta_finish = 0;
-	ret = read_map(fd);
+	read_map();
 	set_edge(&start_edge, g_source, g_source, 0);
 	while (bfs(&start_edge))
 	{
@@ -44,9 +43,7 @@ int	main(void)
 	}
 	g_source->ant = g_ant;
 	check_start_end_reachable(path_found);
-	write (1, g_map, ret + 1);
-	exotic_ant_travelers();
+	handle_options(&flags);
 	free_everything();
 	return (0);
 }
-	// printf("%d\n", g_best_line_count);

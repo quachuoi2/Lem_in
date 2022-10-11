@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 09:08:02 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:47:05 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:18:43 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static int	set_new_hash_slot(t_rlist *slot, t_room *room)
 {
@@ -61,7 +61,8 @@ int	hash_room(t_room *room)
 	last_slot = &g_hash_table[idx];
 	if (check_exisiting_hash_slot(&last_slot, room->name) == ROOM_EXIST)
 		return (ROOM_EXIST);
-	last_slot->next = ft_memalloc(sizeof(t_rlist));
+	last_slot->next = (t_rlist *)ft_memalloc(sizeof(t_rlist));
+	check_malloc((void *)last_slot->next);
 	return (set_new_hash_slot(last_slot->next, room));
 }
 

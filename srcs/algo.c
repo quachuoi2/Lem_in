@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 16:06:16 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:12:25 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static int	count_lines(t_path **path, int p_count)
 {
@@ -74,10 +74,13 @@ static int	set_paths(t_path **path)
 		if (temp->flow == 1)
 		{
 			path[p_count] = (t_path *)ft_memalloc(sizeof(t_path));
+			check_malloc((void *)path[p_count]);
 			path[p_count]->ant_count = 0;
 			path[p_count]->total_steps = count_step(temp->to);
 			path[p_count]->huone
-				= ft_memalloc(sizeof(t_room *) * path[p_count]->total_steps);
+				= (t_room **)
+				ft_memalloc(sizeof(t_room *) * path[p_count]->total_steps);
+			check_malloc((void *)path[p_count]);
 			path[p_count]->huone[0] = temp->to;
 			p_count++;
 		}

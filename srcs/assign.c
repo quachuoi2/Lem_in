@@ -6,11 +6,11 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/09 15:12:37 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:12:50 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../includes/lem_in.h"
 
 static void	assign_start_end_room(t_room *room, int room_state)
 {
@@ -42,6 +42,7 @@ void	assign_room(char *line, int room_state)
 	t_room	*room;
 
 	room = (t_room *)malloc(sizeof(t_room));
+	check_malloc(room);
 	assign_start_end_room(room, room_state);
 	room->steps = 0;
 	room->ant = 0;
@@ -57,7 +58,7 @@ void	assign_room(char *line, int room_state)
 	ft_arrdel(&split);
 }
 
-void	assign_edge(char *line, int fd)
+void	assign_edge(char *line)
 {
 	char	**split;
 	t_room	*r1;
