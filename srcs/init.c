@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 10:25:46 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 17:06:43 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/12 16:34:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ void	init_conclude_path_data(int *r_i, int *bckwrd_edge_used, t_room **old)
 	*r_i = 0;
 	*bckwrd_edge_used = 0;
 	*old = NULL;
+}
+
+void	init_ant_distr(t_ant_distr *distr)
+{
+	distr->str_size = STRING_AMOUNT;
+	distr->line = (char *)ft_memalloc(sizeof(char) * distr->str_size);
+	check_malloc(distr->line);
 }

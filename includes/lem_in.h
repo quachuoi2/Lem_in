@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/12 14:11:05 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/12 16:34:50 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define BACKWARD		-1
 # define UNUSED_FORWARD	0
 # define MAGIC_NUMBER	30000
-# define STRING_AMOUNT	100000
+# define STRING_AMOUNT	1000000
 # define HASH_SIZE		100000
 # define FOUND			1
 # define NOT_FOUND		0
@@ -45,6 +45,7 @@ typedef struct s_path		t_path;
 typedef struct s_line		t_line;
 typedef struct s_queue		t_queue;
 typedef struct s_flags		t_flags;
+typedef struct s_ant_distr	t_ant_distr;
 
 struct s_room
 {
@@ -109,6 +110,12 @@ struct s_flags
 	int	nodistribution;
 };
 
+struct s_ant_distr
+{
+	int		str_size;
+	char	*line;
+};
+
 extern int					g_crossed;
 extern int					g_ant;
 extern int					g_best_path_count;
@@ -134,7 +141,7 @@ void	read_map(void);
 
 //process_map_utils.c
 void	read_command_comments(char *str, int *start_end);
-void	double_str_size(int size);
+void	double_str_size(void **mem, int size);
 void	insurance_reading(int *ret);
 
 //assign.c
@@ -195,12 +202,14 @@ void	free_room_content(t_room *room);
 void	free_everything(void);
 
 //traveler.c
+void	insert_ant(t_ant_distr *ant_distr, char *room_name, int ant_num);
 void	exotic_ant_travelers(void);
 
 //init.c
 void	init_queue(t_queue *q, t_edge *start);
 void	init_global(int *path_found, t_flags *flags);
 void	init_conclude_path_data(int *r_i, int *bckwrd_edge_used, t_room **old);
+void	init_ant_distr(t_ant_distr *distr);
 
 //options.c
 void	print_help(void);
