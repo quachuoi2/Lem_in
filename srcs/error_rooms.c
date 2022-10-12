@@ -6,20 +6,23 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:53:31 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 16:03:20 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/12 13:45:44 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-static int	check_room_input(char **split)
+int	check_multiple_char(char *line, char c, int ammount)
 {
 	int	i;
+	int	count;
 
+	count = 0;
 	i = 0;
-	while (split[i])
-		i++;
-	if (i != 3)
+	while (line[i])
+		if (line[i++] == c)
+			count++;
+	if (count != ammount)
 	{
 		ft_printf("ERROR: Invalid line\n");
 		return (FAIL);
@@ -57,29 +60,11 @@ static int	check_duplicate_room(int hash_result, t_room *room)
 	return (OK);
 }
 
-static int	check_multiple_spaces(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == ' ' && line[i + 1] == ' ')
-		{
-			ft_printf("ERROR: Invalid line\n");
-			return (FAIL);
-		}
-		i++;
-	}
-	return (OK);
-}
-
 void	check_valid_room(char **split, t_room *room, char *line, int hsh_result)
 {
-	if (check_room_input(split) == FAIL
+	if (check_multiple_char(line, ' ', 2) == FAIL
 		|| check_room_coordinates(split) == FAIL
-		|| check_duplicate_room(hsh_result, room) == FAIL
-		|| check_multiple_spaces(line) == FAIL)
+		|| check_duplicate_room(hsh_result, room) == FAIL)
 	{
 		ft_arrdel(&split);
 		teminate_program();

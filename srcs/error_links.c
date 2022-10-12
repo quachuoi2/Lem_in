@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:58:04 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 15:58:30 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/12 13:44:45 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,6 @@ void	check_link_exist(int link_stage)
 		ft_printf("ERROR: No links found\n");
 		teminate_program();
 	}
-}
-
-static int	check_multiple_dashes(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '-' && line[i + 1] == '-')
-		{
-			ft_printf("ERROR: Multiple dashes in link\n");
-			return (FAIL);
-		}
-		i++;
-	}
-	return (OK);
 }
 
 static int	check_empty_room(t_room *r1, t_room *r2)
@@ -67,8 +50,8 @@ static int	check_duplicate_link(t_room *a, t_room *b)
 
 void	check_valid_link(t_room *r1, t_room *r2, char **split, char *line)
 {
-	if (check_empty_room(r1, r2) == FAIL
-		|| check_multiple_dashes(line) == FAIL
+	if (check_multiple_char(line, '-', 1) == FAIL
+		|| check_empty_room(r1, r2) == FAIL
 		|| check_duplicate_link(r1, r2) == FAIL)
 	{
 		ft_arrdel(&split);

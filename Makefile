@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/11 17:20:46 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/12 14:24:28 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ $(NAME): $(OBJS)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES)lem_in.h $(FT_PRINTF)
 	@mkdir -p $(OBJS_DIR)
-	gcc -c $(FLAGS) -I $(INCLUDES) $< -o $@ -g $(OPTIMIZATION)
+	gcc -c $(FLAGS) -I $(INCLUDES) $< -o $@ $(OPTIMIZATION)
 
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)

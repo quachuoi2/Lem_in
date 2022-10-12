@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 17:23:29 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/12 14:11:05 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	check_empty_line(char *line);
 void	check_malloc(void *mem);
 
 //error_rooms.c
+int		check_multiple_char(char *line, char c, int ammount);
 void	check_valid_room(char **split, t_room *room, char *line, int hsh_reslt);
 
 //error_start_end.c
