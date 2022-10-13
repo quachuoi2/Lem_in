@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 17:47:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 16:12:50 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:03:23 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	assign_room(char *line, int room_state)
 	char	**split;
 	t_room	*room;
 
-	room = (t_room *)malloc(sizeof(t_room));
+	room = (t_room *)ft_memalloc(sizeof(t_room));
 	check_malloc(room);
 	assign_start_end_room(room, room_state);
 	room->steps = 0;

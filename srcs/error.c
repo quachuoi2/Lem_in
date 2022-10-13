@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:29:54 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 16:20:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:03:56 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	check_malloc(void *mem)
 {
 	if (mem == NULL)
 	{
-		ft_printf("ERROR: Out of memory\n");
+		ft_printf("ERROR: Failed to allocate memory\n");
 		teminate_program();
 	}
 }
