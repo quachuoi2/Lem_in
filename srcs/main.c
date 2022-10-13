@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:27:08 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 17:20:16 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:12:52 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,17 @@ char		*g_map;
 
 int	main(int argc, char **argv)
 {
-	int		insta_finish;
 	int		path_found;
 	t_edge	start_edge;
 	t_flags	flags;
 
 	init_global(&path_found, &flags);
 	check_options(argc, argv, &flags);
-	insta_finish = 0;
 	read_map();
 	set_edge(&start_edge, g_source, g_source, 0);
 	while (bfs(&start_edge))
 	{
 		lemme_in();
-		if (insta_finish == 0)
-			insta_finish = instant_finish();
 		path_found = 1;
 	}
 	g_source->ant = g_ant;

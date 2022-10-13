@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 06:33:58 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/12 16:34:50 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:41:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@
 # define START_ROOM		-1
 # define END_ROOM		1
 # define NORMAL_ROOM	0
-# define UNVISITED		0
 # define USED_FORWARD	1
 # define BACKWARD		-1
-# define UNUSED_FORWARD	0
+# define UNUSED			0
 # define MAGIC_NUMBER	30000
 # define STRING_AMOUNT	1000000
 # define HASH_SIZE		100000
@@ -128,10 +127,6 @@ extern char					*g_map;
 
 //algo.c
 int		lemme_in(void);
-
-//algo_utils.c
-int		count_step(t_room *room);
-int		instant_finish(void);
 
 //quicksort.c
 void	path_quicksort(t_path **path, int low, int high);

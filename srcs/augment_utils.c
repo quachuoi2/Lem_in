@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:44:32 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 17:18:42 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:08:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	set_flow(t_edge *list, t_room *target_room, int flow)
 
 void	delete_forward_room(t_room *room)
 {
-	set_flow(room->edge, room->next, UNUSED_FORWARD);
+	set_flow(room->edge, room->next, UNUSED);
 	room->next = 0;
 }
 
 void	delete_prev_room(t_room *room)
 {
-	set_flow(room->edge, room->prev, UNUSED_FORWARD);
+	set_flow(room->edge, room->prev, UNUSED);
 	room->prev = 0;
 }
 
@@ -49,5 +49,5 @@ void	remove_old_longer_path(t_room *room)
 		delete_prev_room(room);
 		room = temp;
 	}
-	set_flow(room->edge, final, UNUSED_FORWARD);
+	set_flow(room->edge, final, UNUSED);
 }

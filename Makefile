@@ -6,13 +6,13 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/12 14:24:28 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/13 13:49:11 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 SRCS = main process_map process_map_utils utilities free bfs algo search \
-		augment_utils augment assign quicksort algo_utils traveler hash init\
+		augment_utils augment assign quicksort traveler hash init\
 		error error_rooms error_start_end error_links\
 		options
 
@@ -33,7 +33,6 @@ $(NAME): $(OBJS)
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES)lem_in.h $(FT_PRINTF)
 	@mkdir -p $(OBJS_DIR)
 	gcc -c $(FLAGS) -I $(INCLUDES) $< -o $@ $(OPTIMIZATION)
-
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)
 

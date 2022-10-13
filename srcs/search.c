@@ -6,16 +6,16 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 15:23:53 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 15:59:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:48:27 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-//not occupied
-static int	not_occupied(t_room *prev_room)
+//not occupied - UNUSED flow next
+static int	not_occupied(t_room *prev_room, int next_flow)
 {
-	return (prev_room == NULL);
+	return (prev_room == NULL && next_flow == UNUSED);
 }
 
 // occupied - BACKWARD flow
@@ -24,13 +24,13 @@ static int	occ_backward(int current_flow)
 	return (current_flow == BACKWARD);
 }
 
-// occupiedd - UNUSED_FORWARD flow - BACKWARD flow next
+// occupiedd - UNUSED flow - BACKWARD flow next
 static int	occ_unused_to_backward(int current_flow, int next_flow)
 {
-	return (current_flow == UNUSED_FORWARD && next_flow == BACKWARD);
+	return (current_flow == UNUSED && next_flow == BACKWARD);
 }
 
-// occupied - USUNUSED_FORWARD flow - USED_FORWARD flow next - less steps taken
+// occupied - USED_FORWARD flow - USED_FORWARD flow next - less steps taken
 static int	shorter_path(int next_flow, int old_steps, int current_steps)
 {
 	return (next_flow == USED_FORWARD && old_steps > current_steps);
@@ -49,7 +49,7 @@ int	search(t_edge **queue, int *q_count, int idx, t_tracer *tracer)
 		{
 			if (forw_edge->to == queue[idx]->to->prev)
 				forw_edge->flow = BACKWARD;
-			if (not_occupied(queue[idx]->to->prev)
+			if (not_occupied(queue[idx]->to->prev, forw_edge->flow)
 				|| occ_backward(queue[idx]->flow)
 				|| occ_unused_to_backward(queue[idx]->flow, forw_edge->flow)
 				|| shorter_path(forw_edge->flow,

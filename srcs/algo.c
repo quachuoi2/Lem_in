@@ -6,11 +6,24 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 20:56:00 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/10/11 16:12:25 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:41:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+static int	count_step(t_room *room)
+{
+	int	i;
+
+	i = 1;
+	while (room != g_sink)
+	{
+		room->steps = i++;
+		room = room->next;
+	}
+	return (i);
+}
 
 static int	count_lines(t_path **path, int p_count)
 {
