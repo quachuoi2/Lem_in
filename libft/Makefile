@@ -6,11 +6,12 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/29 19:02:23 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/06 10:06:52 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/10/15 15:16:37 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ../libraries/libft.a
+OUTPUT_DIR=../libraries
+NAME = $(OUTPUT_DIR)/libft.a
 SRCS = ft_abs ft_arrdel ft_atoi ft_bzero ft_calloc ft_countwords ft_d2base ft_d2base_fd\
 ft_diglen ft_udiglen ft_greaternum ft_isspace\
 ft_isalnum ft_isalpha ft_isascii ft_isdigit ft_itoa ft_isprint ft_linkdel \
@@ -31,6 +32,7 @@ INCLUDES = ../includes/
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	@mkdir -p $(OUTPUT_DIR)
 	ar -rcs $(NAME) $(OBJS)
 
 $(OBJS_DIR)%.o: %.c $(INCLUDES)libft.h
@@ -38,11 +40,12 @@ $(OBJS_DIR)%.o: %.c $(INCLUDES)libft.h
 	gcc -c $(FLAGS) -I$(INCLUDES) $< -o $@
 
 clean:
-	@rm -rf $(OBJS_DIR)
+	@/bin/rm -rf ../objs/
 	@/bin/rm -f $(OBJS)
 
 fclean: clean
 	@/bin/rm -f $(NAME)
+	@/bin/rm -rf $(OUTPUT_DIR)
 
 re: fclean all
 
