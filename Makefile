@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/23 06:34:08 by qnguyen           #+#    #+#              #
-#    Updated: 2022/10/15 15:15:28 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/11/23 02:56:52 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ OBJS_DIR = objs/lem_in/
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS)))
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = includes/
-FT_PRINTF = libraries/libftprintf.a
 FT_PRINTF_DIR = ft_printf/
+FT_PRINTF = $(FT_PRINTF_DIR)libftprintf.a
 OPTIMIZATION = -Ofast
 
 all: $(NAME)
